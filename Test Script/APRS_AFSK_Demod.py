@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - AFSK Demod (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 14:09:52 2018
+# Generated: Wed Dec 26 14:13:44 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -17,6 +17,11 @@ if __name__ == '__main__':
         except:
             print "Warning: failed to XInitThreads()"
 
+import os
+import sys
+sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnuradio')))
+
+from AFSK_Demod import AFSK_Demod  # grc-generated hier_block
 from PyQt4 import Qt
 from gnuradio import audio
 from gnuradio import eng_notation
@@ -27,7 +32,6 @@ from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from optparse import OptionParser
 import sip
-import sys
 
 
 class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
@@ -58,7 +62,11 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 22050
+        self.space = space = 2400
+        self.samp_rate = samp_rate = 24e3
+        self.out_sps = out_sps = 2
+        self.mark = mark = 1200
+        self.baud = baud = 1200
 
         ##################################################
         # Blocks
@@ -156,18 +164,33 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(10,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
         self.fft_filter_xxx_0.declare_sample_delay(0)
         self.audio_source_0 = audio.source(int(samp_rate), '', True)
+        self.AFSK_Demod_0 = AFSK_Demod(
+            fsk_lo_tone=mark,
+            baud=baud,
+            fsk_hi_tone=space,
+            in_sps=samp_rate / baud,
+            out_sps=out_sps,
+        )
 
         ##################################################
         # Connections
         ##################################################
+        self.connect((self.AFSK_Demod_0, 0), (self.qtgui_freq_sink_x_0, 0))    
+        self.connect((self.AFSK_Demod_0, 0), (self.qtgui_time_sink_x_0, 0))    
         self.connect((self.audio_source_0, 0), (self.fft_filter_xxx_0, 0))    
-        self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_freq_sink_x_0, 0))    
-        self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_time_sink_x_0, 0))    
+        self.connect((self.fft_filter_xxx_0, 0), (self.AFSK_Demod_0, 0))    
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Demod")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
+
+    def get_space(self):
+        return self.space
+
+    def set_space(self, space):
+        self.space = space
+        self.AFSK_Demod_0.set_fsk_hi_tone(self.space)
 
     def get_samp_rate(self):
         return self.samp_rate
@@ -177,6 +200,29 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.fft_filter_xxx_0.set_taps((firdes.band_pass(10,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
+        self.AFSK_Demod_0.set_in_sps(self.samp_rate / self.baud)
+
+    def get_out_sps(self):
+        return self.out_sps
+
+    def set_out_sps(self, out_sps):
+        self.out_sps = out_sps
+        self.AFSK_Demod_0.set_out_sps(self.out_sps)
+
+    def get_mark(self):
+        return self.mark
+
+    def set_mark(self, mark):
+        self.mark = mark
+        self.AFSK_Demod_0.set_fsk_lo_tone(self.mark)
+
+    def get_baud(self):
+        return self.baud
+
+    def set_baud(self, baud):
+        self.baud = baud
+        self.AFSK_Demod_0.set_baud(self.baud)
+        self.AFSK_Demod_0.set_in_sps(self.samp_rate / self.baud)
 
 
 def main(top_block_cls=APRS_AFSK_Demod, options=None):

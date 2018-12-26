@@ -93,6 +93,87 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(266, 8)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>baud</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>1200</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(344, 9)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>mark</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>1200</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(500, 8)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>out_sps</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>2</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(172, 8)</value>
     </param>
     <param>
@@ -105,7 +186,93 @@
     </param>
     <param>
       <key>value</key>
-      <value>22050</value>
+      <value>24e3</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(421, 9)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>space</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>2400</value>
+    </param>
+  </block>
+  <block>
+    <key>AFSK_Demod</key>
+    <param>
+      <key>baud</key>
+      <value>baud</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>fsk_hi_tone</key>
+      <value>space</value>
+    </param>
+    <param>
+      <key>fsk_lo_tone</key>
+      <value>mark</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(480, 158)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>AFSK_Demod_0</value>
+    </param>
+    <param>
+      <key>in_sps</key>
+      <value>samp_rate / baud</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>out_sps</key>
+      <value>out_sps</value>
     </param>
   </block>
   <block>
@@ -187,7 +354,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(241, 174)</value>
+      <value>(218, 174)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -270,7 +437,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(536, 285)</value>
+      <value>(831, 275)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -557,7 +724,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(534, 166)</value>
+      <value>(831, 166)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -885,6 +1052,18 @@
     </param>
   </block>
   <connection>
+    <source_block_id>AFSK_Demod_0</source_block_id>
+    <sink_block_id>qtgui_freq_sink_x_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>AFSK_Demod_0</source_block_id>
+    <sink_block_id>qtgui_time_sink_x_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>audio_source_0</source_block_id>
     <sink_block_id>fft_filter_xxx_0</sink_block_id>
     <source_key>0</source_key>
@@ -892,13 +1071,7 @@
   </connection>
   <connection>
     <source_block_id>fft_filter_xxx_0</source_block_id>
-    <sink_block_id>qtgui_freq_sink_x_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>fft_filter_xxx_0</source_block_id>
-    <sink_block_id>qtgui_time_sink_x_0</sink_block_id>
+    <sink_block_id>AFSK_Demod_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
