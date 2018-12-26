@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: APRS - Time and Freq Display (Test)
+# Title: APRS - Time and Freq Display with BPF (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 13:45:59 2018
+# Generated: Wed Dec 26 13:49:55 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -32,9 +32,9 @@ import sys
 class APRS_time_and_freq_disp(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "APRS - Time and Freq Display (Test)")
+        gr.top_block.__init__(self, "APRS - Time and Freq Display with BPF (Test)")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("APRS - Time and Freq Display (Test)")
+        self.setWindowTitle("APRS - Time and Freq Display with BPF (Test)")
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
