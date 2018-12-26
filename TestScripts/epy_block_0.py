@@ -15,7 +15,6 @@ from gnuradio import gr
 
 import packet
 
-
 class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
     """
     Converts an array of bytes into a AX25Packet object.

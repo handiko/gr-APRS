@@ -745,7 +745,6 @@ from gnuradio import gr
 
 import packet
 
-
 class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
     """
     Converts an array of bytes into a AX25Packet object.
@@ -799,7 +798,7 @@ need to be copied to the
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(832, 541)</value>
+      <value>(833, 540)</value>
     </param>
     <param>
       <key>_rotation</key>
