@@ -207,7 +207,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(395, 454)</value>
+      <value>(454, 453)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -250,7 +250,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(283, 458)</value>
+      <value>(342, 457)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -395,7 +395,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(70, 454)</value>
+      <value>(129, 453)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -438,7 +438,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(545, 446)</value>
+      <value>(604, 445)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -463,100 +463,6 @@
     <param>
       <key>min</key>
       <value>32</value>
-    </param>
-  </block>
-  <block>
-    <key>epy_block</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_io_cache</key>
-      <value>('HDLC to AX.25', 'blk', [], [('hdlc in', 'message')], [('ax25 out', 'message')], '\n    Converts an array of bytes into a AX25Packet object.\n\n    Connect to the "HDLC Deframer", or a block which emits a PMT tuple of\n    (None, bytearray)\n    ', [])</value>
-    </param>
-    <param>
-      <key>_source_code</key>
-      <value>"""
-Embedded Python Blocks:
-
-Each time this file is saved, GRC will instantiate the first class it finds
-to get ports and parameters of your block. The arguments to __init__  will
-be the parameters. All of them are required to have default values!
-"""
-
-import os, pty
-import struct
-
-import pmt
-import numpy as np
-from gnuradio import gr
-
-import packet
-
-
-class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
-    """
-    Converts an array of bytes into a AX25Packet object.
-
-    Connect to the "HDLC Deframer", or a block which emits a PMT tuple of
-    (None, bytearray)
-    """
-    def __init__(self):
-        gr.sync_block.__init__(self,
-                               name="HDLC to AX.25",
-                               in_sig=None,
-                               out_sig=None)
-        self.message_port_register_in(pmt.intern('hdlc in'))
-        self.message_port_register_out(pmt.intern('ax25 out'))
-        self.set_msg_handler(pmt.intern('hdlc in'), self.handle_msg)
-
-    def handle_msg(self, msg_pmt):
-        msg_pmt = pmt.pmt_to_python.pmt_to_python(msg_pmt)
-
-        msg = bytearray(msg_pmt[1])
-
-        try:
-            pkt = packet.from_bytes(msg)
-            self.message_port_pub(pmt.intern('ax25 out'), pmt.cons(pmt.make_dict(), pmt.pmt_to_python.numpy_to_uvector(np.array([ord(c) for c in (packet.dump(pkt) + '\n')], np.uint8))))
-                
-        except ValueError as e:
-            print e
-
-    def stop(self):
-        gr.sync_block.stop(self)
-        
-    def work(self, input_items, output_items):
-        in0 = input_items[0]
-        # &lt;+signal processing here+&gt;
-        return len(input_items[0])
-        
-        
-        
-</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value>Pyhton module which required 
-to run this script (gr-APRS/Module/packet.py)
-need to be copied to the 
-/usr/lib/python2.7 directory</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(722, 403)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>epy_block_0</value>
     </param>
   </block>
   <block>
@@ -700,50 +606,7 @@ need to be copied to the
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(896, 403)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>pad_sink_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>message</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>ax25</value>
-    </param>
-    <param>
-      <key>num_streams</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>optional</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>pad_sink</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(703, 514)</value>
+      <value>(810, 454)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1039,20 +902,8 @@ need to be copied to the
   </connection>
   <connection>
     <source_block_id>digital_hdlc_deframer_bp_0</source_block_id>
-    <sink_block_id>epy_block_0</sink_block_id>
-    <source_key>out</source_key>
-    <sink_key>hdlc in</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>digital_hdlc_deframer_bp_0</source_block_id>
     <sink_block_id>pad_sink_1</sink_block_id>
     <source_key>out</source_key>
-    <sink_key>in</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>epy_block_0</source_block_id>
-    <sink_block_id>pad_sink_0</sink_block_id>
-    <source_key>ax25 out</source_key>
     <sink_key>in</sink_key>
   </connection>
   <connection>
