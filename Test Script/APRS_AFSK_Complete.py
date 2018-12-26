@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: APRS - AFSK Demod Clock Synch(Test)
+# Title: APRS - AFSK Decoder (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 14:50:37 2018
+# Generated: Wed Dec 26 15:04:43 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -24,6 +24,7 @@ sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnura
 from AFSK_Demod import AFSK_Demod  # grc-generated hier_block
 from PyQt4 import Qt
 from gnuradio import audio
+from gnuradio import blocks
 from gnuradio import digital
 from gnuradio import eng_notation
 from gnuradio import filter
@@ -32,15 +33,16 @@ from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from optparse import OptionParser
+import epy_block_0
 import sip
 
 
-class APRS_AFSK_Demod_Clock_Sync(gr.top_block, Qt.QWidget):
+class APRS_AFSK_Complete(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "APRS - AFSK Demod Clock Synch(Test)")
+        gr.top_block.__init__(self, "APRS - AFSK Decoder (Test)")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("APRS - AFSK Demod Clock Synch(Test)")
+        self.setWindowTitle("APRS - AFSK Decoder (Test)")
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
@@ -57,7 +59,7 @@ class APRS_AFSK_Demod_Clock_Sync(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Demod_Clock_Sync")
+        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Complete")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
         ##################################################
@@ -270,7 +272,14 @@ class APRS_AFSK_Demod_Clock_Sync(gr.top_block, Qt.QWidget):
         self.tab_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 1,0,1,1)
         self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(10,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
         self.fft_filter_xxx_0.declare_sample_delay(0)
+        self.epy_block_0 = epy_block_0.blk()
+        self.digital_hdlc_deframer_bp_0 = digital.hdlc_deframer_bp(32, 500)
+        self.digital_diff_decoder_bb_0 = digital.diff_decoder_bb(2)
         self.digital_clock_recovery_mm_xx_0 = digital.clock_recovery_mm_ff(out_sps*(1+0.0), 0.25*0.175*0.175, 0.5, 0.175, 0.005)
+        self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
+        self.blocks_socket_pdu_0 = blocks.socket_pdu("TCP_SERVER", '', '52001', 10000, False)
+        self.blocks_not_xx_0 = blocks.not_bb()
+        self.blocks_and_const_xx_0 = blocks.and_const_bb(1)
         self.audio_source_0 = audio.source(int(samp_rate), '', True)
         self.AFSK_Demod_0 = AFSK_Demod(
             fsk_lo_tone=mark,
@@ -283,16 +292,23 @@ class APRS_AFSK_Demod_Clock_Sync(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
+        self.msg_connect((self.digital_hdlc_deframer_bp_0, 'out'), (self.epy_block_0, 'hdlc in'))    
+        self.msg_connect((self.epy_block_0, 'ax25 out'), (self.blocks_socket_pdu_0, 'pdus'))    
         self.connect((self.AFSK_Demod_0, 0), (self.digital_clock_recovery_mm_xx_0, 0))    
         self.connect((self.AFSK_Demod_0, 0), (self.qtgui_time_sink_x_0_0, 0))    
         self.connect((self.audio_source_0, 0), (self.fft_filter_xxx_0, 0))    
+        self.connect((self.blocks_and_const_xx_0, 0), (self.digital_hdlc_deframer_bp_0, 0))    
+        self.connect((self.blocks_not_xx_0, 0), (self.blocks_and_const_xx_0, 0))    
+        self.connect((self.digital_binary_slicer_fb_0, 0), (self.digital_diff_decoder_bb_0, 0))    
+        self.connect((self.digital_clock_recovery_mm_xx_0, 0), (self.digital_binary_slicer_fb_0, 0))    
         self.connect((self.digital_clock_recovery_mm_xx_0, 0), (self.qtgui_time_sink_x_0_0_0, 0))    
+        self.connect((self.digital_diff_decoder_bb_0, 0), (self.blocks_not_xx_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.AFSK_Demod_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_freq_sink_x_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_time_sink_x_0, 0))    
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Demod_Clock_Sync")
+        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Complete")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -340,7 +356,7 @@ class APRS_AFSK_Demod_Clock_Sync(gr.top_block, Qt.QWidget):
         self.AFSK_Demod_0.set_in_sps(int(self.samp_rate / self.baud))
 
 
-def main(top_block_cls=APRS_AFSK_Demod_Clock_Sync, options=None):
+def main(top_block_cls=APRS_AFSK_Complete, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
