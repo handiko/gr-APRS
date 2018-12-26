@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - AFSK Demod (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 14:13:44 2018
+# Generated: Wed Dec 26 14:20:03 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -71,6 +71,65 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         ##################################################
         # Blocks
         ##################################################
+        self.tab = Qt.QTabWidget()
+        self.tab_widget_0 = Qt.QWidget()
+        self.tab_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_0)
+        self.tab_grid_layout_0 = Qt.QGridLayout()
+        self.tab_layout_0.addLayout(self.tab_grid_layout_0)
+        self.tab.addTab(self.tab_widget_0, 'Spectrum')
+        self.tab_widget_1 = Qt.QWidget()
+        self.tab_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_1)
+        self.tab_grid_layout_1 = Qt.QGridLayout()
+        self.tab_layout_1.addLayout(self.tab_grid_layout_1)
+        self.tab.addTab(self.tab_widget_1, 'Demodulator')
+        self.top_grid_layout.addWidget(self.tab, 1,0,1,1)
+        self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
+        	1024, #size
+        	baud*out_sps, #samp_rate
+        	'Demodulator Output', #name
+        	1 #number of inputs
+        )
+        self.qtgui_time_sink_x_0_0.set_update_time(0.10)
+        self.qtgui_time_sink_x_0_0.set_y_axis(-1, 1)
+        
+        self.qtgui_time_sink_x_0_0.set_y_label('Amplitude', "")
+        
+        self.qtgui_time_sink_x_0_0.enable_tags(-1, True)
+        self.qtgui_time_sink_x_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
+        self.qtgui_time_sink_x_0_0.enable_autoscale(False)
+        self.qtgui_time_sink_x_0_0.enable_grid(True)
+        self.qtgui_time_sink_x_0_0.enable_axis_labels(True)
+        self.qtgui_time_sink_x_0_0.enable_control_panel(False)
+        
+        if not False:
+          self.qtgui_time_sink_x_0_0.disable_legend()
+        
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        widths = [2, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+                  "magenta", "yellow", "dark red", "dark green", "blue"]
+        styles = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        markers = [-1, -1, -1, -1, -1,
+                   -1, -1, -1, -1, -1]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+        
+        for i in xrange(1):
+            if len(labels[i]) == 0:
+                self.qtgui_time_sink_x_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_time_sink_x_0_0.set_line_label(i, labels[i])
+            self.qtgui_time_sink_x_0_0.set_line_width(i, widths[i])
+            self.qtgui_time_sink_x_0_0.set_line_color(i, colors[i])
+            self.qtgui_time_sink_x_0_0.set_line_style(i, styles[i])
+            self.qtgui_time_sink_x_0_0.set_line_marker(i, markers[i])
+            self.qtgui_time_sink_x_0_0.set_line_alpha(i, alphas[i])
+        
+        self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.pyqwidget(), Qt.QWidget)
+        self.top_layout.addWidget(self._qtgui_time_sink_x_0_0_win)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
         	1024, #size
         	samp_rate, #samp_rate
@@ -117,7 +176,7 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
         
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.top_layout.addWidget(self._qtgui_time_sink_x_0_win)
+        self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_win, 0,0,1,1)
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_f(
         	4096, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
@@ -160,7 +219,7 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
         
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
+        self.tab_layout_0.addWidget(self._qtgui_freq_sink_x_0_win)
         self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(10,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
         self.fft_filter_xxx_0.declare_sample_delay(0)
         self.audio_source_0 = audio.source(int(samp_rate), '', True)
@@ -168,17 +227,18 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
             fsk_lo_tone=mark,
             baud=baud,
             fsk_hi_tone=space,
-            in_sps=samp_rate / baud,
+            in_sps=int(samp_rate / baud),
             out_sps=out_sps,
         )
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.AFSK_Demod_0, 0), (self.qtgui_freq_sink_x_0, 0))    
-        self.connect((self.AFSK_Demod_0, 0), (self.qtgui_time_sink_x_0, 0))    
+        self.connect((self.AFSK_Demod_0, 0), (self.qtgui_time_sink_x_0_0, 0))    
         self.connect((self.audio_source_0, 0), (self.fft_filter_xxx_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.AFSK_Demod_0, 0))    
+        self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_freq_sink_x_0, 0))    
+        self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_time_sink_x_0, 0))    
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Demod")
@@ -200,13 +260,14 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.fft_filter_xxx_0.set_taps((firdes.band_pass(10,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
-        self.AFSK_Demod_0.set_in_sps(self.samp_rate / self.baud)
+        self.AFSK_Demod_0.set_in_sps(int(self.samp_rate / self.baud))
 
     def get_out_sps(self):
         return self.out_sps
 
     def set_out_sps(self, out_sps):
         self.out_sps = out_sps
+        self.qtgui_time_sink_x_0_0.set_samp_rate(self.baud*self.out_sps)
         self.AFSK_Demod_0.set_out_sps(self.out_sps)
 
     def get_mark(self):
@@ -221,8 +282,9 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
 
     def set_baud(self, baud):
         self.baud = baud
+        self.qtgui_time_sink_x_0_0.set_samp_rate(self.baud*self.out_sps)
         self.AFSK_Demod_0.set_baud(self.baud)
-        self.AFSK_Demod_0.set_in_sps(self.samp_rate / self.baud)
+        self.AFSK_Demod_0.set_in_sps(int(self.samp_rate / self.baud))
 
 
 def main(top_block_cls=APRS_AFSK_Demod, options=None):
