@@ -1091,7 +1091,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>tab@1</value>
     </param>
     <param>
       <key>_rotation</key>
