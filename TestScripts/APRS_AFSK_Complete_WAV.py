@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: APRS - AFSK Demod (Test)
+# Title: APRS - AFSK Decoder (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 14:30:47 2018
+# Generated: Thu Dec 27 01:59:38 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -24,6 +24,8 @@ sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnura
 from AFSK_Demod import AFSK_Demod  # grc-generated hier_block
 from PyQt4 import Qt
 from gnuradio import audio
+from gnuradio import blocks
+from gnuradio import digital
 from gnuradio import eng_notation
 from gnuradio import filter
 from gnuradio import gr
@@ -31,15 +33,16 @@ from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from optparse import OptionParser
+import epy_block_0
 import sip
 
 
-class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
+class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "APRS - AFSK Demod (Test)")
+        gr.top_block.__init__(self, "APRS - AFSK Decoder (Test)")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("APRS - AFSK Demod (Test)")
+        self.setWindowTitle("APRS - AFSK Decoder (Test)")
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
@@ -56,7 +59,7 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Demod")
+        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Complete_WAV")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
         ##################################################
@@ -76,13 +79,60 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         self.tab_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_0)
         self.tab_grid_layout_0 = Qt.QGridLayout()
         self.tab_layout_0.addLayout(self.tab_grid_layout_0)
-        self.tab.addTab(self.tab_widget_0, 'Spectrum')
+        self.tab.addTab(self.tab_widget_0, 'Input Signal')
         self.tab_widget_1 = Qt.QWidget()
         self.tab_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_1)
         self.tab_grid_layout_1 = Qt.QGridLayout()
         self.tab_layout_1.addLayout(self.tab_grid_layout_1)
-        self.tab.addTab(self.tab_widget_1, 'Demodulator')
-        self.top_grid_layout.addWidget(self.tab, 1,0,1,1)
+        self.tab.addTab(self.tab_widget_1, 'Demodulator Output')
+        self.top_layout.addWidget(self.tab)
+        self.qtgui_time_sink_x_0_0_0 = qtgui.time_sink_f(
+        	256, #size
+        	baud, #samp_rate
+        	'Clock Sync Output', #name
+        	1 #number of inputs
+        )
+        self.qtgui_time_sink_x_0_0_0.set_update_time(0.10)
+        self.qtgui_time_sink_x_0_0_0.set_y_axis(-5, 5)
+        
+        self.qtgui_time_sink_x_0_0_0.set_y_label('Amplitude', "")
+        
+        self.qtgui_time_sink_x_0_0_0.enable_tags(-1, True)
+        self.qtgui_time_sink_x_0_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
+        self.qtgui_time_sink_x_0_0_0.enable_autoscale(False)
+        self.qtgui_time_sink_x_0_0_0.enable_grid(True)
+        self.qtgui_time_sink_x_0_0_0.enable_axis_labels(True)
+        self.qtgui_time_sink_x_0_0_0.enable_control_panel(False)
+        
+        if not False:
+          self.qtgui_time_sink_x_0_0_0.disable_legend()
+        
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        widths = [2, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        colors = ["red", "red", "green", "black", "cyan",
+                  "magenta", "yellow", "dark red", "dark green", "blue"]
+        styles = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        markers = [-1, -1, -1, -1, -1,
+                   -1, -1, -1, -1, -1]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+        
+        for i in xrange(1):
+            if len(labels[i]) == 0:
+                self.qtgui_time_sink_x_0_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_time_sink_x_0_0_0.set_line_label(i, labels[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_width(i, widths[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_color(i, colors[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_style(i, styles[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_marker(i, markers[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_alpha(i, alphas[i])
+        
+        self._qtgui_time_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0.pyqwidget(), Qt.QWidget)
+        self.tab_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_0_win, 1,0,1,1)
         self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
         	512, #size
         	baud*out_sps, #samp_rate
@@ -129,7 +179,7 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0_0.set_line_alpha(i, alphas[i])
         
         self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.pyqwidget(), Qt.QWidget)
-        self.tab_layout_1.addWidget(self._qtgui_time_sink_x_0_0_win)
+        self.tab_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_win, 0,0,1,1)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
         	1024, #size
         	samp_rate, #samp_rate
@@ -176,7 +226,7 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
         
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_win, 0,0,1,1)
+        self.tab_grid_layout_0.addWidget(self._qtgui_time_sink_x_0_win, 0,0,1,1)
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_f(
         	4096, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
@@ -219,14 +269,23 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
         
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.tab_layout_0.addWidget(self._qtgui_freq_sink_x_0_win)
-        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(10,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
+        self.tab_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 1,0,1,1)
+        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(1,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
         self.fft_filter_xxx_0.declare_sample_delay(0)
-        self.audio_source_0 = audio.source(int(samp_rate), '', True)
+        self.epy_block_0 = epy_block_0.blk()
+        self.digital_hdlc_deframer_bp_0 = digital.hdlc_deframer_bp(32, 500)
+        self.digital_diff_decoder_bb_0 = digital.diff_decoder_bb(2)
+        self.digital_clock_recovery_mm_xx_0 = digital.clock_recovery_mm_ff(out_sps*(1+0.0), 0.25*0.175*0.175, 0.5, 0.175, 0.005)
+        self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
+        self.blocks_wavfile_source_0 = blocks.wavfile_source('/home/handiko/aprs.wav', True)
+        self.blocks_socket_pdu_0 = blocks.socket_pdu("TCP_SERVER", '', '52001', 10000, False)
+        self.blocks_not_xx_0 = blocks.not_bb()
+        self.blocks_and_const_xx_0 = blocks.and_const_bb(1)
+        self.audio_sink_0 = audio.sink(int(samp_rate), '', True)
         self.AFSK_Demod_0 = AFSK_Demod(
-            fsk_lo_tone=mark,
             baud=baud,
             fsk_hi_tone=space,
+            fsk_lo_tone=mark,
             in_sps=int(samp_rate / baud),
             out_sps=out_sps,
         )
@@ -234,14 +293,24 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
+        self.msg_connect((self.digital_hdlc_deframer_bp_0, 'out'), (self.epy_block_0, 'hdlc in'))    
+        self.msg_connect((self.epy_block_0, 'ax25 out'), (self.blocks_socket_pdu_0, 'pdus'))    
+        self.connect((self.AFSK_Demod_0, 0), (self.digital_clock_recovery_mm_xx_0, 0))    
         self.connect((self.AFSK_Demod_0, 0), (self.qtgui_time_sink_x_0_0, 0))    
-        self.connect((self.audio_source_0, 0), (self.fft_filter_xxx_0, 0))    
+        self.connect((self.blocks_and_const_xx_0, 0), (self.digital_hdlc_deframer_bp_0, 0))    
+        self.connect((self.blocks_not_xx_0, 0), (self.blocks_and_const_xx_0, 0))    
+        self.connect((self.blocks_wavfile_source_0, 0), (self.fft_filter_xxx_0, 0))    
+        self.connect((self.digital_binary_slicer_fb_0, 0), (self.digital_diff_decoder_bb_0, 0))    
+        self.connect((self.digital_clock_recovery_mm_xx_0, 0), (self.digital_binary_slicer_fb_0, 0))    
+        self.connect((self.digital_clock_recovery_mm_xx_0, 0), (self.qtgui_time_sink_x_0_0_0, 0))    
+        self.connect((self.digital_diff_decoder_bb_0, 0), (self.blocks_not_xx_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.AFSK_Demod_0, 0))    
+        self.connect((self.fft_filter_xxx_0, 0), (self.audio_sink_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_freq_sink_x_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_time_sink_x_0, 0))    
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Demod")
+        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Complete_WAV")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -259,7 +328,7 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
-        self.fft_filter_xxx_0.set_taps((firdes.band_pass(10,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
+        self.fft_filter_xxx_0.set_taps((firdes.band_pass(1,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
         self.AFSK_Demod_0.set_in_sps(int(self.samp_rate / self.baud))
 
     def get_out_sps(self):
@@ -268,6 +337,7 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
     def set_out_sps(self, out_sps):
         self.out_sps = out_sps
         self.qtgui_time_sink_x_0_0.set_samp_rate(self.baud*self.out_sps)
+        self.digital_clock_recovery_mm_xx_0.set_omega(self.out_sps*(1+0.0))
         self.AFSK_Demod_0.set_out_sps(self.out_sps)
 
     def get_mark(self):
@@ -282,12 +352,13 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
 
     def set_baud(self, baud):
         self.baud = baud
+        self.qtgui_time_sink_x_0_0_0.set_samp_rate(self.baud)
         self.qtgui_time_sink_x_0_0.set_samp_rate(self.baud*self.out_sps)
         self.AFSK_Demod_0.set_baud(self.baud)
         self.AFSK_Demod_0.set_in_sps(int(self.samp_rate / self.baud))
 
 
-def main(top_block_cls=APRS_AFSK_Demod, options=None):
+def main(top_block_cls=APRS_AFSK_Complete_WAV, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
