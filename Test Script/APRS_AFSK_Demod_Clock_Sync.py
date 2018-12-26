@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - AFSK Demod Clock Synch(Test)
 # Author: Handiko
-# Generated: Wed Dec 26 14:36:16 2018
+# Generated: Wed Dec 26 14:40:25 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -85,7 +85,7 @@ class APRS_AFSK_Demod_Clock_Sync(gr.top_block, Qt.QWidget):
         self.tab.addTab(self.tab_widget_1, 'Demodulator Output')
         self.top_layout.addWidget(self.tab)
         self.qtgui_time_sink_x_0_0_0 = qtgui.time_sink_f(
-        	512, #size
+        	256, #size
         	baud, #samp_rate
         	'Clock Sync Output', #name
         	1 #number of inputs
