@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - Time and Freq Display with BPF (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 13:51:32 2018
+# Generated: Wed Dec 26 13:55:34 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -86,7 +86,7 @@ class APRS_time_and_freq_disp(gr.top_block, Qt.QWidget):
         
         labels = ['', '', '', '', '',
                   '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
+        widths = [2, 1, 1, 1, 1,
                   1, 1, 1, 1, 1]
         colors = ["blue", "red", "green", "black", "cyan",
                   "magenta", "yellow", "dark red", "dark green", "blue"]
@@ -136,7 +136,7 @@ class APRS_time_and_freq_disp(gr.top_block, Qt.QWidget):
         
         labels = ['', '', '', '', '',
                   '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
+        widths = [2, 1, 1, 1, 1,
                   1, 1, 1, 1, 1]
         colors = ["blue", "red", "green", "black", "cyan",
                   "magenta", "yellow", "dark red", "dark green", "dark blue"]
