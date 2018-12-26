@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - AFSK Decoder (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 15:04:43 2018
+# Generated: Thu Dec 27 01:14:41 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -282,9 +282,9 @@ class APRS_AFSK_Complete(gr.top_block, Qt.QWidget):
         self.blocks_and_const_xx_0 = blocks.and_const_bb(1)
         self.audio_source_0 = audio.source(int(samp_rate), '', True)
         self.AFSK_Demod_0 = AFSK_Demod(
-            fsk_lo_tone=mark,
             baud=baud,
             fsk_hi_tone=space,
+            fsk_lo_tone=mark,
             in_sps=int(samp_rate / baud),
             out_sps=out_sps,
         )

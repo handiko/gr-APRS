@@ -295,7 +295,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -862,7 +862,7 @@ need to be copied to the
     </param>
     <param>
       <key>taps</key>
-      <value>firdes.band_pass(10,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)</value>
+      <value>firdes.band_pass(1,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)</value>
     </param>
     <param>
       <key>type</key>

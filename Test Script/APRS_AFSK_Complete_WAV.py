@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - AFSK Decoder (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 15:30:37 2018
+# Generated: Thu Dec 27 01:16:53 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -270,7 +270,7 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
         
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
         self.tab_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 1,0,1,1)
-        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(10,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
+        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(1,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
         self.fft_filter_xxx_0.declare_sample_delay(0)
         self.epy_block_0 = epy_block_0.blk()
         self.digital_hdlc_deframer_bp_0 = digital.hdlc_deframer_bp(32, 500)
@@ -283,9 +283,9 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
         self.blocks_and_const_xx_0 = blocks.and_const_bb(1)
         self.audio_sink_0 = audio.sink(int(samp_rate), '', True)
         self.AFSK_Demod_0 = AFSK_Demod(
-            fsk_lo_tone=mark,
             baud=baud,
             fsk_hi_tone=space,
+            fsk_lo_tone=mark,
             in_sps=int(samp_rate / baud),
             out_sps=out_sps,
         )
@@ -328,7 +328,7 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
-        self.fft_filter_xxx_0.set_taps((firdes.band_pass(10,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
+        self.fft_filter_xxx_0.set_taps((firdes.band_pass(1,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
         self.AFSK_Demod_0.set_in_sps(int(self.samp_rate / self.baud))
 
     def get_out_sps(self):
