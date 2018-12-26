@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - AFSK Demod (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 14:21:21 2018
+# Generated: Wed Dec 26 14:30:47 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -84,13 +84,13 @@ class APRS_AFSK_Demod(gr.top_block, Qt.QWidget):
         self.tab.addTab(self.tab_widget_1, 'Demodulator')
         self.top_grid_layout.addWidget(self.tab, 1,0,1,1)
         self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
-        	1024, #size
+        	512, #size
         	baud*out_sps, #samp_rate
         	'Demodulator Output', #name
         	1 #number of inputs
         )
         self.qtgui_time_sink_x_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0.set_y_axis(-1, 1)
+        self.qtgui_time_sink_x_0_0.set_y_axis(-5, 5)
         
         self.qtgui_time_sink_x_0_0.set_y_label('Amplitude', "")
         
