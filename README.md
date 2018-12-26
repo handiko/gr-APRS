@@ -7,7 +7,9 @@ Installation steps :
 * `git clone https://github.com/handiko/gr-APRS.git`
 * `cd gr-APRS/HierBlock/`
 * `gnuradio-companion AFSK_Demod.grc` **AFSK_Demod.grc** should be installed **first**.
-* **Click RUN** button on GNU Radio companion (It will do nothing on foreground, since it will just build and install the Hier Block). And then **Close**.
+* **Click RUN** (F6) button on GNU Radio companion (It will do nothing on foreground, since it will just build and install the Hier Block silently). And then **Close**.
+* `gnuradio-companion APRS_Rx.grc` **APRS_Rx.grc** should be installed **after** AFSK_Demod.grc.
+* Again, **Click RUN** (F6) button. And then Close.
 * **Open the GNU Radio**. The new Hier Block will be listed under APRS module.
 
 And then **very important** steps :
