@@ -9,3 +9,7 @@ Installation steps :
 * `gnuradio-companion AFSK_Demod.grc` **AFSK_Demod.grc** should be installed **first**.
 * **Click RUN** button on GNU Radio companion (It will do nothing on foreground, since it will just build and install the Hier Block). And then **Close**.
 * **Open the GNU Radio**. The new Hier Block will be listed under APRS module.
+And then **very important** steps :
+* `cd`
+* `sudo cp gr-APRS/Module/packet.py /usr/lib/python2.7/` This will copy **packet.py** files from **gr-APRS/Module/** into **/usr/lib/python2.7/** directory. Without this, the HDLC to AX.25 block will not run.
+Finish, and now you can open grc files on `gr-APRS/Examples/` or `gr-APRS/TestScripts/` and run it.
