@@ -187,7 +187,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(295, 67)</value>
+      <value>(241, 174)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -270,7 +270,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(341, 289)</value>
+      <value>(536, 285)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -557,7 +557,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(341, 166)</value>
+      <value>(534, 166)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -891,13 +891,13 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>audio_source_0</source_block_id>
+    <source_block_id>fft_filter_xxx_0</source_block_id>
     <sink_block_id>qtgui_freq_sink_x_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>audio_source_0</source_block_id>
+    <source_block_id>fft_filter_xxx_0</source_block_id>
     <sink_block_id>qtgui_time_sink_x_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>

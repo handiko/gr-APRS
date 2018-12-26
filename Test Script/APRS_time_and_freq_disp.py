@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - Time and Freq Display with BPF (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 13:49:55 2018
+# Generated: Wed Dec 26 13:51:32 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -20,6 +20,7 @@ if __name__ == '__main__':
 from PyQt4 import Qt
 from gnuradio import audio
 from gnuradio import eng_notation
+from gnuradio import filter
 from gnuradio import gr
 from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
@@ -152,13 +153,16 @@ class APRS_time_and_freq_disp(gr.top_block, Qt.QWidget):
         
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
+        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(1,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
+        self.fft_filter_xxx_0.declare_sample_delay(0)
         self.audio_source_0 = audio.source(int(samp_rate), '', True)
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.audio_source_0, 0), (self.qtgui_freq_sink_x_0, 0))    
-        self.connect((self.audio_source_0, 0), (self.qtgui_time_sink_x_0, 0))    
+        self.connect((self.audio_source_0, 0), (self.fft_filter_xxx_0, 0))    
+        self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_freq_sink_x_0, 0))    
+        self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_time_sink_x_0, 0))    
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "APRS_time_and_freq_disp")
@@ -172,6 +176,7 @@ class APRS_time_and_freq_disp(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
+        self.fft_filter_xxx_0.set_taps((firdes.band_pass(1,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
 
 
 def main(top_block_cls=APRS_time_and_freq_disp, options=None):
