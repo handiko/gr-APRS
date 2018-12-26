@@ -18,7 +18,7 @@ And then **very important** steps :
 
 Finish, and now you can open grc files on **gr-APRS/Examples/** or **gr-APRS/TestScripts/** and run it.
 
-**About The HDLC to AX.25 block**
+### About The HDLC to AX.25 block
 This block which functions to convert HDLC data into TNC2 APRS formats is constructed from the "Python Block" which native to the GNU Radio Companion. To build one yourself:
 * From GNU Radio Core module, under Misc, add Python Block into your flowgraph.
 * Double Click that block to open the properties and then click Open in Editor. If then you asked about which editor to choose, just select default or any editor you prefer.
