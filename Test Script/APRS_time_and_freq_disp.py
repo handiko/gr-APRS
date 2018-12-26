@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - Time and Freq Display with BPF (Test)
 # Author: Handiko
-# Generated: Wed Dec 26 13:55:34 2018
+# Generated: Wed Dec 26 13:57:18 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -70,7 +70,7 @@ class APRS_time_and_freq_disp(gr.top_block, Qt.QWidget):
         	1 #number of inputs
         )
         self.qtgui_time_sink_x_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0.set_y_axis(-0.1, 0.1)
+        self.qtgui_time_sink_x_0.set_y_axis(-1, 1)
         
         self.qtgui_time_sink_x_0.set_y_label('Amplitude', "")
         
@@ -153,7 +153,7 @@ class APRS_time_and_freq_disp(gr.top_block, Qt.QWidget):
         
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
-        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(1,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
+        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(10,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
         self.fft_filter_xxx_0.declare_sample_delay(0)
         self.audio_source_0 = audio.source(int(samp_rate), '', True)
 
@@ -176,7 +176,7 @@ class APRS_time_and_freq_disp(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
-        self.fft_filter_xxx_0.set_taps((firdes.band_pass(1,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
+        self.fft_filter_xxx_0.set_taps((firdes.band_pass(10,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
 
 
 def main(top_block_cls=APRS_time_and_freq_disp, options=None):
