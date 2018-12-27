@@ -41,4 +41,19 @@ All the hier blocks are constructed graphically using GNU Radio Companion. AFSK 
 ### APRS Rx
 ![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/APRS_Rx.grc.png)
 
+## Examples
+There is some grc examples included in **gr-APRS/Examples** and **gr-APRS/TestScripts** folder. WAV files are also included in the **gr-APRS/WAV** for testing purposes.
+
+### APRS RX RTL
+From **gr-APRS/Examples/APRS_RX_RTL.grc**. This examples utilizes the low cost RTL SDR dongle for receiving APRS signal on 144.390 Mhz (for usage on another frequency, please change the frequency in the grc).
+![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/APRS_RX_RTL.grc.png)
+
+### APRS SCARD
+From **gr-APRS/Examples/APRS_SCARD.grc**. This examples utilizes the onboard sound card for the usage with a VHF Radio receiver. Audio from the Radio SPK output should be fed into the MIC input of your soundcard.
+![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/APRS_SCARD.grc.png)
+
+### APRS AFSK Complete WAV
+From **gr-APRS/TestScripts/APRS_AFSK_Complete_WAV.grc**. This examples will decode AFSK audio files which included in **gr-APRS/WAV**. This example mainly for testing purposes (for example, to find the best values of Mu and Gain Mu).
+![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/APRS_AFSK_Complete_WAV.grc.png)
+
 ...
