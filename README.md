@@ -57,7 +57,7 @@ From **gr-APRS/Examples/APRS_SCARD.grc**. This examples utilizes the onboard sou
 ![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/APRS_SCARD.grc.png)
 
 ### APRS AFSK Complete WAV
-From **gr-APRS/TestScripts/APRS_AFSK_Complete_WAV.grc**. This examples will decode AFSK audio files which included in **gr-APRS/WAV**. This example mainly for testing purposes (for example, to find the best values of Mu and Gain Mu).
+From **gr-APRS/TestScripts/APRS_AFSK_Complete_WAV.grc**. This examples will decode AFSK audio files which included in **gr-APRS/WAV**. This example is mainly for testing purposes (for example, to find the best values of Mu and Gain Mu).
 ![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/APRS_AFSK_Complete_WAV.grc.png)
 
 ## TODO
