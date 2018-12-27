@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: APRS - AFSK Decoder (Test)
 # Author: Handiko
-# Generated: Thu Dec 27 22:19:21 2018
+# Generated: Thu Dec 27 23:18:08 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -279,7 +279,7 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
         self.digital_diff_decoder_bb_0 = digital.diff_decoder_bb(2)
         self.digital_clock_recovery_mm_xx_0 = digital.clock_recovery_mm_ff(out_sps*(1+0.0), 0.25*gmu*gmu, mu, gmu, 0.005)
         self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
-        self.blocks_wavfile_source_0 = blocks.wavfile_source('/home/handiko/aprs.wav', True)
+        self.blocks_wavfile_source_0 = blocks.wavfile_source('/home/handiko/gr-APRS/WAV/aprs_random.wav', True)
         self.blocks_socket_pdu_0 = blocks.socket_pdu("TCP_SERVER", '', '52001', 10000, False)
         self.blocks_not_xx_0 = blocks.not_bb()
         self.blocks_and_const_xx_0 = blocks.and_const_bb(1)

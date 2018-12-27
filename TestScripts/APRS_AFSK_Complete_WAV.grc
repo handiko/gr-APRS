@@ -547,7 +547,7 @@ bit depth : 16 bits</value>
     </param>
     <param>
       <key>file</key>
-      <value>/home/handiko/aprs.wav</value>
+      <value>/home/handiko/gr-APRS/WAV/aprs_random.wav</value>
     </param>
     <param>
       <key>_coordinate</key>

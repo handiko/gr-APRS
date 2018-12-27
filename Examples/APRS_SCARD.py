@@ -5,7 +5,7 @@
 # Title: APRS - With Sound Card Input
 # Author: Handiko
 # Description: www.github.com/handiko/gr-APRS
-# Generated: Thu Dec 27 22:08:59 2018
+# Generated: Thu Dec 27 23:09:27 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -271,7 +271,7 @@ class APRS_SCARD(gr.top_block, Qt.QWidget):
         
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
         self.tab_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 1,0,1,1)
-        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(1,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
+        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(10,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
         self.fft_filter_xxx_0.declare_sample_delay(0)
         self.epy_block_0 = epy_block_0.blk()
         self.blocks_socket_pdu_0 = blocks.socket_pdu("TCP_SERVER", '', '52001', 10000, False)
@@ -316,7 +316,7 @@ class APRS_SCARD(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
-        self.fft_filter_xxx_0.set_taps((firdes.band_pass(1,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
+        self.fft_filter_xxx_0.set_taps((firdes.band_pass(10,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
         self.APRS_Rx_0.set_samp_rate(self.samp_rate)
 
     def get_mu(self):
