@@ -60,4 +60,8 @@ From **gr-APRS/Examples/APRS_SCARD.grc**. This examples utilizes the onboard sou
 From **gr-APRS/TestScripts/APRS_AFSK_Complete_WAV.grc**. This examples will decode AFSK audio files which included in **gr-APRS/WAV**. This example mainly for testing purposes (for example, to find the best values of Mu and Gain Mu).
 ![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/APRS_AFSK_Complete_WAV.grc.png)
 
+## Acknwoledgement
+* https://github.com/wb2osz/direwolf for which the AFSK Demod scheme is pretty much based on their excellent works.
+* https://github.com/tkuester/gr-bruninga and
+* https://github.com/daniestevez/gr-satellites for the clock synchronization method.
 ...
