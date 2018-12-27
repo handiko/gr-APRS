@@ -5,7 +5,7 @@
 # Title: APRS - With RTL-SDR dongle
 # Author: Handiko
 # Description: www.github.com/handiko/gr-APRS
-# Generated: Fri Dec 28 00:29:52 2018
+# Generated: Fri Dec 28 00:37:21 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -24,7 +24,7 @@ sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnura
 
 from APRS_Rx import APRS_Rx  # grc-generated hier_block
 from PyQt4 import Qt
-from gnuradio import audio
+from gnuradio import analog
 from gnuradio import blocks
 from gnuradio import eng_notation
 from gnuradio import filter
@@ -32,9 +32,14 @@ from gnuradio import gr
 from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
+from gnuradio.filter import pfb
+from gnuradio.qtgui import Range, RangeWidget
 from optparse import OptionParser
 import epy_block_0
+import math
+import osmosdr
 import sip
+import time
 
 
 class APRS_RX_RTL(gr.top_block, Qt.QWidget):
@@ -66,191 +71,82 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.space = space = 2400
-        self.samp_rate = samp_rate = 24e3
+        self.samp_rate = samp_rate = 2.88e6
+        self.rfgain = rfgain = 10
         self.mu = mu = 0.5
         self.mark = mark = 1200
         self.gmu = gmu = 0.1
+        self.freq = freq = 144.39e6
+        self.dev_ppm = dev_ppm = 52
+        self.ch_rate = ch_rate = 48e3
+        self.bb_rate = bb_rate = 192e3
         self.baud = baud = 1200
 
         ##################################################
         # Blocks
         ##################################################
-        self.tab = Qt.QTabWidget()
-        self.tab_widget_0 = Qt.QWidget()
-        self.tab_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_0)
-        self.tab_grid_layout_0 = Qt.QGridLayout()
-        self.tab_layout_0.addLayout(self.tab_grid_layout_0)
-        self.tab.addTab(self.tab_widget_0, 'Input Signal')
-        self.tab_widget_1 = Qt.QWidget()
-        self.tab_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_1)
-        self.tab_grid_layout_1 = Qt.QGridLayout()
-        self.tab_layout_1.addLayout(self.tab_grid_layout_1)
-        self.tab.addTab(self.tab_widget_1, 'Demodulator Output')
-        self.top_layout.addWidget(self.tab)
-        self.qtgui_time_sink_x_0_0_0 = qtgui.time_sink_f(
-        	256, #size
-        	baud, #samp_rate
-        	'Clock Sync Output', #name
-        	1 #number of inputs
-        )
-        self.qtgui_time_sink_x_0_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0_0.set_y_axis(-5, 5)
-        
-        self.qtgui_time_sink_x_0_0_0.set_y_label('Amplitude', "")
-        
-        self.qtgui_time_sink_x_0_0_0.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
-        self.qtgui_time_sink_x_0_0_0.enable_autoscale(False)
-        self.qtgui_time_sink_x_0_0_0.enable_grid(True)
-        self.qtgui_time_sink_x_0_0_0.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0_0_0.enable_control_panel(False)
-        
-        if not False:
-          self.qtgui_time_sink_x_0_0_0.disable_legend()
-        
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [2, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["red", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [-1, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-        
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0_0_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0_0_0.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0_0_0.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0_0_0.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0_0_0.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0_0_0.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0_0_0.set_line_alpha(i, alphas[i])
-        
-        self._qtgui_time_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0.pyqwidget(), Qt.QWidget)
-        self.tab_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_0_win, 1,0,1,1)
-        self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
-        	512, #size
-        	baud*2, #samp_rate
-        	'Demodulator Output', #name
-        	1 #number of inputs
-        )
-        self.qtgui_time_sink_x_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0.set_y_axis(-5, 5)
-        
-        self.qtgui_time_sink_x_0_0.set_y_label('Amplitude', "")
-        
-        self.qtgui_time_sink_x_0_0.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
-        self.qtgui_time_sink_x_0_0.enable_autoscale(False)
-        self.qtgui_time_sink_x_0_0.enable_grid(True)
-        self.qtgui_time_sink_x_0_0.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0_0.enable_control_panel(False)
-        
-        if not False:
-          self.qtgui_time_sink_x_0_0.disable_legend()
-        
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [2, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [-1, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-        
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0_0.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0_0.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0_0.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0_0.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0_0.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0_0.set_line_alpha(i, alphas[i])
-        
-        self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.pyqwidget(), Qt.QWidget)
-        self.tab_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_win, 0,0,1,1)
-        self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
-        	1024, #size
-        	samp_rate, #samp_rate
-        	'Input Waveform', #name
-        	1 #number of inputs
-        )
-        self.qtgui_time_sink_x_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0.set_y_axis(-1, 1)
-        
-        self.qtgui_time_sink_x_0.set_y_label('Amplitude', "")
-        
-        self.qtgui_time_sink_x_0.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
-        self.qtgui_time_sink_x_0.enable_autoscale(False)
-        self.qtgui_time_sink_x_0.enable_grid(True)
-        self.qtgui_time_sink_x_0.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0.enable_control_panel(False)
-        
-        if not False:
-          self.qtgui_time_sink_x_0.disable_legend()
-        
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [2, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [-1, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-        
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
-        
-        self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.tab_grid_layout_0.addWidget(self._qtgui_time_sink_x_0_win, 0,0,1,1)
-        self.qtgui_freq_sink_x_0 = qtgui.freq_sink_f(
+        self._rfgain_range = Range(0, 49, 1, 10, 100)
+        self._rfgain_win = RangeWidget(self._rfgain_range, self.set_rfgain, 'RF Gain (dB)', "counter_slider", float)
+        self.top_grid_layout.addWidget(self._rfgain_win, 3,0,1,1)
+        self.qtgui_waterfall_sink_x_0 = qtgui.waterfall_sink_c(
         	4096, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
         	0, #fc
-        	samp_rate, #bw
-        	'Input Spectrum', #name
+        	192e3, #bw
+        	"", #name
+                1 #number of inputs
+        )
+        self.qtgui_waterfall_sink_x_0.set_update_time(0.10)
+        self.qtgui_waterfall_sink_x_0.enable_grid(False)
+        self.qtgui_waterfall_sink_x_0.enable_axis_labels(False)
+        
+        if not False:
+          self.qtgui_waterfall_sink_x_0.disable_legend()
+        
+        if "complex" == "float" or "complex" == "msg_float":
+          self.qtgui_waterfall_sink_x_0.set_plot_pos_half(not True)
+        
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        colors = [6, 0, 0, 0, 0,
+                  0, 0, 0, 0, 0]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+        for i in xrange(1):
+            if len(labels[i]) == 0:
+                self.qtgui_waterfall_sink_x_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_waterfall_sink_x_0.set_line_label(i, labels[i])
+            self.qtgui_waterfall_sink_x_0.set_color_map(i, colors[i])
+            self.qtgui_waterfall_sink_x_0.set_line_alpha(i, alphas[i])
+        
+        self.qtgui_waterfall_sink_x_0.set_intensity_range(-105, -20)
+        
+        self._qtgui_waterfall_sink_x_0_win = sip.wrapinstance(self.qtgui_waterfall_sink_x_0.pyqwidget(), Qt.QWidget)
+        self.top_grid_layout.addWidget(self._qtgui_waterfall_sink_x_0_win, 0,2,1,1)
+        self.qtgui_freq_sink_x_0 = qtgui.freq_sink_c(
+        	2048, #size
+        	firdes.WIN_BLACKMAN_hARRIS, #wintype
+        	144.39e6, #fc
+        	192e3, #bw
+        	"", #name
         	1 #number of inputs
         )
         self.qtgui_freq_sink_x_0.set_update_time(0.10)
-        self.qtgui_freq_sink_x_0.set_y_axis(-120, -20)
+        self.qtgui_freq_sink_x_0.set_y_axis(-120, -10)
         self.qtgui_freq_sink_x_0.set_y_label('Relative Gain', 'dB')
         self.qtgui_freq_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
         self.qtgui_freq_sink_x_0.enable_autoscale(False)
         self.qtgui_freq_sink_x_0.enable_grid(True)
-        self.qtgui_freq_sink_x_0.set_fft_average(1.0)
-        self.qtgui_freq_sink_x_0.enable_axis_labels(True)
+        self.qtgui_freq_sink_x_0.set_fft_average(0.2)
+        self.qtgui_freq_sink_x_0.enable_axis_labels(False)
         self.qtgui_freq_sink_x_0.enable_control_panel(False)
         
         if not False:
           self.qtgui_freq_sink_x_0.disable_legend()
         
-        if "float" == "float" or "float" == "msg_float":
-          self.qtgui_freq_sink_x_0.set_plot_pos_half(not False)
+        if "complex" == "float" or "complex" == "msg_float":
+          self.qtgui_freq_sink_x_0.set_plot_pos_half(not True)
         
         labels = ['', '', '', '', '',
                   '', '', '', '', '']
@@ -258,7 +154,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
                   1, 1, 1, 1, 1]
         colors = ["blue", "red", "green", "black", "cyan",
                   "magenta", "yellow", "dark red", "dark green", "dark blue"]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+        alphas = [0.8, 1.0, 1.0, 1.0, 1.0,
                   1.0, 1.0, 1.0, 1.0, 1.0]
         for i in xrange(1):
             if len(labels[i]) == 0:
@@ -270,12 +166,43 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
         
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.tab_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 1,0,1,1)
-        self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(10,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
-        self.fft_filter_xxx_0.declare_sample_delay(0)
+        self.top_grid_layout.addWidget(self._qtgui_freq_sink_x_0_win, 0,0,1,2)
+        self.pfb_decimator_ccf_0_0 = pfb.decimator_ccf(
+        	  int(samp_rate / ch_rate),
+        	  (),
+        	  0,
+        	  100,
+                  True,
+                  True)
+        self.pfb_decimator_ccf_0_0.declare_sample_delay(0)
+        	
+        self.pfb_decimator_ccf_0 = pfb.decimator_ccf(
+        	  int(samp_rate / bb_rate),
+        	  (),
+        	  0,
+        	  100,
+                  True,
+                  True)
+        self.pfb_decimator_ccf_0.declare_sample_delay(0)
+        	
+        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
+        self.osmosdr_source_0.set_sample_rate(samp_rate)
+        self.osmosdr_source_0.set_center_freq(freq, 0)
+        self.osmosdr_source_0.set_freq_corr(dev_ppm, 0)
+        self.osmosdr_source_0.set_dc_offset_mode(0, 0)
+        self.osmosdr_source_0.set_iq_balance_mode(0, 0)
+        self.osmosdr_source_0.set_gain_mode(False, 0)
+        self.osmosdr_source_0.set_gain(rfgain, 0)
+        self.osmosdr_source_0.set_if_gain(20, 0)
+        self.osmosdr_source_0.set_bb_gain(20, 0)
+        self.osmosdr_source_0.set_antenna('', 0)
+        self.osmosdr_source_0.set_bandwidth(0, 0)
+          
+        self.fft_filter_xxx_1 = filter.fft_filter_fff(1, (firdes.band_pass(1,ch_rate,400,5e3,400,firdes.WIN_BLACKMAN)), 1)
+        self.fft_filter_xxx_1.declare_sample_delay(0)
         self.epy_block_0 = epy_block_0.blk()
         self.blocks_socket_pdu_0 = blocks.socket_pdu("TCP_SERVER", '', '52001', 10000, False)
-        self.audio_source_0 = audio.source(int(samp_rate), '', True)
+        self.analog_quadrature_demod_cf_0 = analog.quadrature_demod_cf(ch_rate/(2*math.pi*12e3/8.0))
         self.APRS_Rx_0 = APRS_Rx(
             samp_rate=samp_rate,
             baud=baud,
@@ -290,12 +217,13 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         ##################################################
         self.msg_connect((self.APRS_Rx_0, 'HDLC'), (self.epy_block_0, 'hdlc in'))    
         self.msg_connect((self.epy_block_0, 'ax25 out'), (self.blocks_socket_pdu_0, 'pdus'))    
-        self.connect((self.APRS_Rx_0, 1), (self.qtgui_time_sink_x_0_0, 0))    
-        self.connect((self.APRS_Rx_0, 0), (self.qtgui_time_sink_x_0_0_0, 0))    
-        self.connect((self.audio_source_0, 0), (self.fft_filter_xxx_0, 0))    
-        self.connect((self.fft_filter_xxx_0, 0), (self.APRS_Rx_0, 0))    
-        self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_freq_sink_x_0, 0))    
-        self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_time_sink_x_0, 0))    
+        self.connect((self.analog_quadrature_demod_cf_0, 0), (self.fft_filter_xxx_1, 0))    
+        self.connect((self.fft_filter_xxx_1, 0), (self.APRS_Rx_0, 0))    
+        self.connect((self.osmosdr_source_0, 0), (self.pfb_decimator_ccf_0, 0))    
+        self.connect((self.osmosdr_source_0, 0), (self.pfb_decimator_ccf_0_0, 0))    
+        self.connect((self.pfb_decimator_ccf_0, 0), (self.qtgui_freq_sink_x_0, 0))    
+        self.connect((self.pfb_decimator_ccf_0, 0), (self.qtgui_waterfall_sink_x_0, 0))    
+        self.connect((self.pfb_decimator_ccf_0_0, 0), (self.analog_quadrature_demod_cf_0, 0))    
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "APRS_RX_RTL")
@@ -314,10 +242,15 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
-        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
-        self.fft_filter_xxx_0.set_taps((firdes.band_pass(10,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
+        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
         self.APRS_Rx_0.set_samp_rate(self.samp_rate)
+
+    def get_rfgain(self):
+        return self.rfgain
+
+    def set_rfgain(self, rfgain):
+        self.rfgain = rfgain
+        self.osmosdr_source_0.set_gain(self.rfgain, 0)
 
     def get_mu(self):
         return self.mu
@@ -340,13 +273,39 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.gmu = gmu
         self.APRS_Rx_0.set_gmu(self.gmu)
 
+    def get_freq(self):
+        return self.freq
+
+    def set_freq(self, freq):
+        self.freq = freq
+        self.osmosdr_source_0.set_center_freq(self.freq, 0)
+
+    def get_dev_ppm(self):
+        return self.dev_ppm
+
+    def set_dev_ppm(self, dev_ppm):
+        self.dev_ppm = dev_ppm
+        self.osmosdr_source_0.set_freq_corr(self.dev_ppm, 0)
+
+    def get_ch_rate(self):
+        return self.ch_rate
+
+    def set_ch_rate(self, ch_rate):
+        self.ch_rate = ch_rate
+        self.fft_filter_xxx_1.set_taps((firdes.band_pass(1,self.ch_rate,400,5e3,400,firdes.WIN_BLACKMAN)))
+        self.analog_quadrature_demod_cf_0.set_gain(self.ch_rate/(2*math.pi*12e3/8.0))
+
+    def get_bb_rate(self):
+        return self.bb_rate
+
+    def set_bb_rate(self, bb_rate):
+        self.bb_rate = bb_rate
+
     def get_baud(self):
         return self.baud
 
     def set_baud(self, baud):
         self.baud = baud
-        self.qtgui_time_sink_x_0_0_0.set_samp_rate(self.baud)
-        self.qtgui_time_sink_x_0_0.set_samp_rate(self.baud*2)
         self.APRS_Rx_0.set_baud(self.baud)
 
 
