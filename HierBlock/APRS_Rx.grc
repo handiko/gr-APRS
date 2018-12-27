@@ -156,7 +156,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(335, 6)</value>
+      <value>(334, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -481,7 +481,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(793, 4)</value>
+      <value>(795, 6)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -524,7 +524,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(437, 6)</value>
+      <value>(439, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -567,7 +567,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(706, 5)</value>
+      <value>(710, 5)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -708,7 +708,7 @@
     </param>
     <param>
       <key>label</key>
-      <value>Demodulator</value>
+      <value>Demod</value>
     </param>
     <param>
       <key>num_streams</key>
@@ -782,7 +782,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(193, 7)</value>
+      <value>(190, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -825,7 +825,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(570, 6)</value>
+      <value>(575, 6)</value>
     </param>
     <param>
       <key>_rotation</key>

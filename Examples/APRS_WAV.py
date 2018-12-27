@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: APRS - AFSK Decoder (Test)
+# Title: APRS - WAV
 # Author: Handiko
-# Generated: Thu Dec 27 22:19:21 2018
+# Description: www.github.com/handiko/gr-APRS
+# Generated: Thu Dec 27 22:06:12 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -21,11 +22,10 @@ import os
 import sys
 sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnuradio')))
 
-from AFSK_Demod import AFSK_Demod  # grc-generated hier_block
+from APRS_Rx import APRS_Rx  # grc-generated hier_block
 from PyQt4 import Qt
 from gnuradio import audio
 from gnuradio import blocks
-from gnuradio import digital
 from gnuradio import eng_notation
 from gnuradio import filter
 from gnuradio import gr
@@ -37,12 +37,12 @@ import epy_block_0
 import sip
 
 
-class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
+class APRS_WAV(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "APRS - AFSK Decoder (Test)")
+        gr.top_block.__init__(self, "APRS - WAV")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("APRS - AFSK Decoder (Test)")
+        self.setWindowTitle("APRS - WAV")
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
@@ -59,7 +59,7 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Complete_WAV")
+        self.settings = Qt.QSettings("GNU Radio", "APRS_WAV")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
         ##################################################
@@ -67,7 +67,6 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
         ##################################################
         self.space = space = 2400
         self.samp_rate = samp_rate = 24e3
-        self.out_sps = out_sps = 4
         self.mu = mu = 0.5
         self.mark = mark = 1200
         self.gmu = gmu = 0.1
@@ -137,7 +136,7 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
         self.tab_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_0_win, 1,0,1,1)
         self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
         	512, #size
-        	baud*out_sps, #samp_rate
+        	baud*2, #samp_rate
         	'Demodulator Output', #name
         	1 #number of inputs
         )
@@ -275,44 +274,33 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
         self.fft_filter_xxx_0 = filter.fft_filter_fff(1, (firdes.band_pass(1,samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)), 1)
         self.fft_filter_xxx_0.declare_sample_delay(0)
         self.epy_block_0 = epy_block_0.blk()
-        self.digital_hdlc_deframer_bp_0 = digital.hdlc_deframer_bp(32, 500)
-        self.digital_diff_decoder_bb_0 = digital.diff_decoder_bb(2)
-        self.digital_clock_recovery_mm_xx_0 = digital.clock_recovery_mm_ff(out_sps*(1+0.0), 0.25*gmu*gmu, mu, gmu, 0.005)
-        self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
         self.blocks_wavfile_source_0 = blocks.wavfile_source('/home/handiko/aprs.wav', True)
         self.blocks_socket_pdu_0 = blocks.socket_pdu("TCP_SERVER", '', '52001', 10000, False)
-        self.blocks_not_xx_0 = blocks.not_bb()
-        self.blocks_and_const_xx_0 = blocks.and_const_bb(1)
         self.audio_sink_0 = audio.sink(int(samp_rate), '', True)
-        self.AFSK_Demod_0 = AFSK_Demod(
+        self.APRS_Rx_0 = APRS_Rx(
+            samp_rate=samp_rate,
             baud=baud,
-            fsk_hi_tone=space,
-            fsk_lo_tone=mark,
-            in_sps=int(samp_rate / baud),
-            out_sps=out_sps,
+            mark=mark,
+            space=space,
+            mu=mu,
+            gmu=gmu,
         )
 
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.digital_hdlc_deframer_bp_0, 'out'), (self.epy_block_0, 'hdlc in'))    
+        self.msg_connect((self.APRS_Rx_0, 'HDLC'), (self.epy_block_0, 'hdlc in'))    
         self.msg_connect((self.epy_block_0, 'ax25 out'), (self.blocks_socket_pdu_0, 'pdus'))    
-        self.connect((self.AFSK_Demod_0, 0), (self.digital_clock_recovery_mm_xx_0, 0))    
-        self.connect((self.AFSK_Demod_0, 0), (self.qtgui_time_sink_x_0_0, 0))    
-        self.connect((self.blocks_and_const_xx_0, 0), (self.digital_hdlc_deframer_bp_0, 0))    
-        self.connect((self.blocks_not_xx_0, 0), (self.blocks_and_const_xx_0, 0))    
+        self.connect((self.APRS_Rx_0, 1), (self.qtgui_time_sink_x_0_0, 0))    
+        self.connect((self.APRS_Rx_0, 0), (self.qtgui_time_sink_x_0_0_0, 0))    
         self.connect((self.blocks_wavfile_source_0, 0), (self.fft_filter_xxx_0, 0))    
-        self.connect((self.digital_binary_slicer_fb_0, 0), (self.digital_diff_decoder_bb_0, 0))    
-        self.connect((self.digital_clock_recovery_mm_xx_0, 0), (self.digital_binary_slicer_fb_0, 0))    
-        self.connect((self.digital_clock_recovery_mm_xx_0, 0), (self.qtgui_time_sink_x_0_0_0, 0))    
-        self.connect((self.digital_diff_decoder_bb_0, 0), (self.blocks_not_xx_0, 0))    
-        self.connect((self.fft_filter_xxx_0, 0), (self.AFSK_Demod_0, 0))    
+        self.connect((self.fft_filter_xxx_0, 0), (self.APRS_Rx_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.audio_sink_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_freq_sink_x_0, 0))    
         self.connect((self.fft_filter_xxx_0, 0), (self.qtgui_time_sink_x_0, 0))    
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "APRS_AFSK_Complete_WAV")
+        self.settings = Qt.QSettings("GNU Radio", "APRS_WAV")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -321,7 +309,7 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
 
     def set_space(self, space):
         self.space = space
-        self.AFSK_Demod_0.set_fsk_hi_tone(self.space)
+        self.APRS_Rx_0.set_space(self.space)
 
     def get_samp_rate(self):
         return self.samp_rate
@@ -331,38 +319,28 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.fft_filter_xxx_0.set_taps((firdes.band_pass(1,self.samp_rate,1e3,2.6e3,100,firdes.WIN_BLACKMAN)))
-        self.AFSK_Demod_0.set_in_sps(int(self.samp_rate / self.baud))
-
-    def get_out_sps(self):
-        return self.out_sps
-
-    def set_out_sps(self, out_sps):
-        self.out_sps = out_sps
-        self.qtgui_time_sink_x_0_0.set_samp_rate(self.baud*self.out_sps)
-        self.digital_clock_recovery_mm_xx_0.set_omega(self.out_sps*(1+0.0))
-        self.AFSK_Demod_0.set_out_sps(self.out_sps)
+        self.APRS_Rx_0.set_samp_rate(self.samp_rate)
 
     def get_mu(self):
         return self.mu
 
     def set_mu(self, mu):
         self.mu = mu
-        self.digital_clock_recovery_mm_xx_0.set_mu(self.mu)
+        self.APRS_Rx_0.set_mu(self.mu)
 
     def get_mark(self):
         return self.mark
 
     def set_mark(self, mark):
         self.mark = mark
-        self.AFSK_Demod_0.set_fsk_lo_tone(self.mark)
+        self.APRS_Rx_0.set_mark(self.mark)
 
     def get_gmu(self):
         return self.gmu
 
     def set_gmu(self, gmu):
         self.gmu = gmu
-        self.digital_clock_recovery_mm_xx_0.set_gain_omega(0.25*self.gmu*self.gmu)
-        self.digital_clock_recovery_mm_xx_0.set_gain_mu(self.gmu)
+        self.APRS_Rx_0.set_gmu(self.gmu)
 
     def get_baud(self):
         return self.baud
@@ -370,12 +348,11 @@ class APRS_AFSK_Complete_WAV(gr.top_block, Qt.QWidget):
     def set_baud(self, baud):
         self.baud = baud
         self.qtgui_time_sink_x_0_0_0.set_samp_rate(self.baud)
-        self.qtgui_time_sink_x_0_0.set_samp_rate(self.baud*self.out_sps)
-        self.AFSK_Demod_0.set_baud(self.baud)
-        self.AFSK_Demod_0.set_in_sps(int(self.samp_rate / self.baud))
+        self.qtgui_time_sink_x_0_0.set_samp_rate(self.baud*2)
+        self.APRS_Rx_0.set_baud(self.baud)
 
 
-def main(top_block_cls=APRS_AFSK_Complete_WAV, options=None):
+def main(top_block_cls=APRS_WAV, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
