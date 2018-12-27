@@ -1,5 +1,10 @@
 # gr-APRS
-GNU Radio Hierarchial Block(s) to Test and Receive APRS Packet (with examples). Tested on GNU Radio v3.7.10.
+GNU Radio Hierarchial Block(s) to Test and Receive APRS Packet (with examples). Tested on GNU Radio v3.7.10 / Linux Ubuntu.
+
+![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/gnuradio_logo.svg)
+
+## Dependency
+* **GNU Radio**. Please check out https://www.gnuradio.org/ or https://github.com/gnuradio/gnuradio
 
 ## Installations
 This OOT Module is built upon GNU Radio hierarchial block scheme. The hierarchial block itself is "transparently" built graphically / visually using GRC. The hier blocks are provided in the gr-APRS/HierBlock folder.
@@ -11,6 +16,7 @@ Installation steps :
 * `gnuradio-companion APRS_Rx.grc` **APRS_Rx.grc** should be installed **after** AFSK_Demod.grc.
 * Again, **Click RUN** (F6) button. And then Close.
 * **Open the GNU Radio**. The new Hier Block will be listed under APRS module.
+![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/successful_installation.png)
 
 And then **very important** steps :
 * `cd`
