@@ -31,8 +31,8 @@ This block which functions to convert HDLC data into TNC2 APRS formats is constr
 * Double Click that block to open the properties and then click Open in Editor. If then you asked about which editor to choose, just select default or any editor you prefer.
 * In the editor, copy and paste python code from **gr-APRS/Module/epb.py**, safe, close, and hit OK.
 * Now your Python Block should be turned into HDLC to AX.25 Block, have message i/o ports which labelled as "hdlc in" and "ax25 out".
+
 ![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/hdlc_to_ax25_block.png)
-* Done !
 
 ## Hier Blocks
 All the hier blocks are constructed graphically using GNU Radio Companion. AFSK Demod hier block is required by the APRS Rx hier block (hier block which contains another hier block within), so it should be installed first.
