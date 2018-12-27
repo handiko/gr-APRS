@@ -5,7 +5,7 @@
 # Title: APRS - With RTL-SDR dongle
 # Author: Handiko
 # Description: www.github.com/handiko/gr-APRS
-# Generated: Fri Dec 28 00:44:42 2018
+# Generated: Fri Dec 28 00:54:10 2018
 ##################################################
 
 if __name__ == '__main__':
@@ -88,18 +88,24 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         ##################################################
         self._rfgain_range = Range(0, 49, 1, 10, 100)
         self._rfgain_win = RangeWidget(self._rfgain_range, self.set_rfgain, 'RF Gain (dB)', "counter_slider", float)
-        self.top_grid_layout.addWidget(self._rfgain_win, 3,0,1,1)
+        self.top_grid_layout.addWidget(self._rfgain_win, 2,0,1,1)
+        self.rational_resampler_xxx_0 = filter.rational_resampler_fff(
+                interpolation=1,
+                decimation=4,
+                taps=None,
+                fractional_bw=None,
+        )
         self.qtgui_waterfall_sink_x_0 = qtgui.waterfall_sink_c(
         	4096, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
         	0, #fc
         	192e3, #bw
-        	"", #name
+        	'RF Spectrum', #name
                 1 #number of inputs
         )
         self.qtgui_waterfall_sink_x_0.set_update_time(0.10)
         self.qtgui_waterfall_sink_x_0.enable_grid(False)
-        self.qtgui_waterfall_sink_x_0.enable_axis_labels(False)
+        self.qtgui_waterfall_sink_x_0.enable_axis_labels(True)
         
         if not False:
           self.qtgui_waterfall_sink_x_0.disable_legend()
@@ -171,7 +177,50 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
         
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_win, 1,0,1,3)
+        self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_win, 1,0,1,2)
+        self.qtgui_freq_sink_x_0_0 = qtgui.freq_sink_f(
+        	2048, #size
+        	firdes.WIN_BLACKMAN_hARRIS, #wintype
+        	0, #fc
+        	ch_rate / 4, #bw
+        	'AF Spectrum', #name
+        	1 #number of inputs
+        )
+        self.qtgui_freq_sink_x_0_0.set_update_time(0.10)
+        self.qtgui_freq_sink_x_0_0.set_y_axis(-80, 20)
+        self.qtgui_freq_sink_x_0_0.set_y_label('Relative Gain', 'dB')
+        self.qtgui_freq_sink_x_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
+        self.qtgui_freq_sink_x_0_0.enable_autoscale(False)
+        self.qtgui_freq_sink_x_0_0.enable_grid(True)
+        self.qtgui_freq_sink_x_0_0.set_fft_average(0.2)
+        self.qtgui_freq_sink_x_0_0.enable_axis_labels(True)
+        self.qtgui_freq_sink_x_0_0.enable_control_panel(False)
+        
+        if not False:
+          self.qtgui_freq_sink_x_0_0.disable_legend()
+        
+        if "float" == "float" or "float" == "msg_float":
+          self.qtgui_freq_sink_x_0_0.set_plot_pos_half(not False)
+        
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        widths = [2, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+                  "magenta", "yellow", "dark red", "dark green", "dark blue"]
+        alphas = [0.8, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+        for i in xrange(1):
+            if len(labels[i]) == 0:
+                self.qtgui_freq_sink_x_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_freq_sink_x_0_0.set_line_label(i, labels[i])
+            self.qtgui_freq_sink_x_0_0.set_line_width(i, widths[i])
+            self.qtgui_freq_sink_x_0_0.set_line_color(i, colors[i])
+            self.qtgui_freq_sink_x_0_0.set_line_alpha(i, alphas[i])
+        
+        self._qtgui_freq_sink_x_0_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_0.pyqwidget(), Qt.QWidget)
+        self.top_grid_layout.addWidget(self._qtgui_freq_sink_x_0_0_win, 1,2,2,1)
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_c(
         	2048, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
@@ -253,7 +302,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.analog_quadrature_demod_cf_0 = analog.quadrature_demod_cf(ch_rate/(2*math.pi*12e3/8.0))
         self._afgain_range = Range(-20, -1, 0.1, -7, 100)
         self._afgain_win = RangeWidget(self._afgain_range, self.set_afgain, 'AF Gain (dB)', "counter_slider", float)
-        self.top_grid_layout.addWidget(self._afgain_win, 3,1,1,1)
+        self.top_grid_layout.addWidget(self._afgain_win, 2,1,1,1)
         self.APRS_Rx_0 = APRS_Rx(
             samp_rate=ch_rate,
             baud=baud,
@@ -271,11 +320,13 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.connect((self.APRS_Rx_0, 0), (self.qtgui_time_sink_x_0, 0))    
         self.connect((self.analog_quadrature_demod_cf_0, 0), (self.fft_filter_xxx_1, 0))    
         self.connect((self.fft_filter_xxx_1, 0), (self.APRS_Rx_0, 0))    
+        self.connect((self.fft_filter_xxx_1, 0), (self.rational_resampler_xxx_0, 0))    
         self.connect((self.osmosdr_source_0, 0), (self.pfb_decimator_ccf_0, 0))    
         self.connect((self.osmosdr_source_0, 0), (self.pfb_decimator_ccf_0_0, 0))    
         self.connect((self.pfb_decimator_ccf_0, 0), (self.qtgui_freq_sink_x_0, 0))    
         self.connect((self.pfb_decimator_ccf_0, 0), (self.qtgui_waterfall_sink_x_0, 0))    
         self.connect((self.pfb_decimator_ccf_0_0, 0), (self.analog_quadrature_demod_cf_0, 0))    
+        self.connect((self.rational_resampler_xxx_0, 0), (self.qtgui_freq_sink_x_0_0, 0))    
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "APRS_RX_RTL")
@@ -343,6 +394,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
 
     def set_ch_rate(self, ch_rate):
         self.ch_rate = ch_rate
+        self.qtgui_freq_sink_x_0_0.set_frequency_range(0, self.ch_rate / 4)
         self.fft_filter_xxx_1.set_taps((firdes.band_pass(1,self.ch_rate,400,5e3,400,firdes.WIN_BLACKMAN)))
         self.analog_quadrature_demod_cf_0.set_gain(self.ch_rate/(2*math.pi*12e3/8.0))
         self.APRS_Rx_0.set_samp_rate(self.ch_rate)
