@@ -66,6 +66,7 @@ From **gr-APRS/TestScripts/APRS_AFSK_Complete_WAV.grc**. This examples will deco
 ## TODO
 * Bundle up all the codes using gr_modtool
 * Optimizing AFSK Demodulation and Clock Sync process
+* Tidy up this README file a bit :)
 
 ## Acknwoledgement
 * https://github.com/wb2osz/direwolf for which the AFSK Demod scheme is pretty much based on their excellent works.
