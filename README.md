@@ -49,7 +49,7 @@ There is some grc examples included in **gr-APRS/Examples** and **gr-APRS/TestSc
 A Few notes:
 * AFSK Demod hier block (Filterbank AFSK Demodulator) is recommended to run with input samples per symbol (**integer**) of at least 20 and must be **a value of input sample rate divided by baudrate** (**integer**). For example, at baudrate of 1200baud, if you run at minimum recommended samples per symbol of 20, then the input sample rate must be 24kHz (24kHz / 1200baud = 20 sps).
 * The output of the APRS decoder (HDLC to AX25 block) is sent to the **Socket PDU Block**. To examine this output, you can open terminal and run `telnet localhost 52001`. Image below shows the output using terminal, which the transmitted messages are some random strings under experimental data type (`,` data type) for testing purposes.
-![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/APRS_RX_RTL.grc.png)
+![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/aprs_output.png)
 
 ### APRS RX RTL
 From **gr-APRS/Examples/APRS_RX_RTL.grc**. This examples utilizes the low cost RTL SDR dongle for receiving APRS signal on 144.390 Mhz (for usage on another frequency, please change the frequency in the grc).
