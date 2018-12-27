@@ -2225,7 +2225,7 @@ need to be copied to the
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(258, 228)</value>
+      <value>(250, 227)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2292,7 +2292,7 @@ need to be copied to the
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(259, 132)</value>
+      <value>(251, 131)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3241,7 +3241,7 @@ need to be copied to the
     </param>
     <param>
       <key>size</key>
-      <value>1024</value>
+      <value>256</value>
     </param>
     <param>
       <key>srate</key>
