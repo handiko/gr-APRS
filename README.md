@@ -44,7 +44,7 @@ All the hier blocks are constructed graphically using GNU Radio Companion. AFSK 
 ![alt text](https://github.com/handiko/gr-APRS/blob/master/Pic/APRS_Rx.grc.png)
 
 ## Examples
-There is some grc examples included in **gr-APRS/Examples** and **gr-APRS/TestScripts** folder. WAV files are also included in the **gr-APRS/WAV** for testing purposes.
+There are some grc examples included in **gr-APRS/Examples** and **gr-APRS/TestScripts** folder. WAV files are also included in the **gr-APRS/WAV** for testing purposes.
 
 A Few notes:
 * AFSK Demod hier block (Filterbank AFSK Demodulator) is recommended to run with input samples per symbol (**integer**) of at least 20 and must be **a value of input sample rate divided by baudrate** (**integer**). For example, at baudrate of 1200baud, if you run at minimum recommended samples per symbol of 20, then the input sample rate must be 24kHz (24kHz / 1200baud = 20 sps).
