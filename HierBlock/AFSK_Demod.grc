@@ -93,6 +93,60 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(802, 105)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>attack</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0.5 + 0*1e-4</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(881, 106)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>decay</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>10e-6 + 0*2e-2</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(194, 57)</value>
     </param>
     <param>
@@ -112,7 +166,7 @@
     <key>analog_agc2_xx</key>
     <param>
       <key>attack_rate</key>
-      <value>0.5</value>
+      <value>attack</value>
     </param>
     <param>
       <key>alias</key>
@@ -128,7 +182,7 @@
     </param>
     <param>
       <key>decay_rate</key>
-      <value>0.00001</value>
+      <value>decay</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -164,7 +218,7 @@
     </param>
     <param>
       <key>reference</key>
-      <value>1.0</value>
+      <value>0.5</value>
     </param>
     <param>
       <key>type</key>
@@ -175,7 +229,7 @@
     <key>analog_agc2_xx</key>
     <param>
       <key>attack_rate</key>
-      <value>0.5</value>
+      <value>attack</value>
     </param>
     <param>
       <key>alias</key>
@@ -191,7 +245,7 @@
     </param>
     <param>
       <key>decay_rate</key>
-      <value>0.00001</value>
+      <value>decay</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -227,7 +281,7 @@
     </param>
     <param>
       <key>reference</key>
-      <value>1.0</value>
+      <value>0.5</value>
     </param>
     <param>
       <key>type</key>
@@ -512,7 +566,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(669, 550)</value>
+      <value>(635, 550)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -860,7 +914,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(804, 538)</value>
+      <value>(770, 538)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1180,7 +1234,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(466, 546)</value>
+      <value>(432, 546)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1207,7 +1261,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(460, 607)</value>
+      <value>(426, 607)</value>
     </param>
     <param>
       <key>_rotation</key>
