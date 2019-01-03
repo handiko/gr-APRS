@@ -5,7 +5,7 @@
 # Title: APRS - With RTL-SDR dongle
 # Author: Handiko
 # Description: www.github.com/handiko/gr-APRS
-# Generated: Thu Jan  3 20:46:30 2019
+# Generated: Thu Jan  3 21:35:01 2019
 ##################################################
 
 if __name__ == '__main__':
@@ -90,8 +90,8 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self._rfgain_win = RangeWidget(self._rfgain_range, self.set_rfgain, 'RF Gain (dB)', "counter_slider", float)
         self.top_grid_layout.addWidget(self._rfgain_win, 2,0,1,1)
         self.rational_resampler_xxx_0 = filter.rational_resampler_fff(
-                interpolation=1,
-                decimation=4,
+                interpolation=8000,
+                decimation=int(ch_rate),
                 taps=None,
                 fractional_bw=None,
         )
@@ -179,10 +179,10 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_win, 1,0,1,2)
         self.qtgui_freq_sink_x_0_0 = qtgui.freq_sink_f(
-        	2048, #size
+        	1024, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
         	0, #fc
-        	ch_rate / 4, #bw
+        	8e3, #bw
         	'AF Spectrum', #name
         	1 #number of inputs
         )
@@ -394,7 +394,6 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
 
     def set_ch_rate(self, ch_rate):
         self.ch_rate = ch_rate
-        self.qtgui_freq_sink_x_0_0.set_frequency_range(0, self.ch_rate / 4)
         self.fft_filter_xxx_1.set_taps((firdes.band_pass(1,self.ch_rate,400,5e3,400,firdes.WIN_BLACKMAN)))
         self.analog_quadrature_demod_cf_0.set_gain(self.ch_rate/(2*math.pi*12e3/8.0))
         self.APRS_Rx_0.set_samp_rate(self.ch_rate)

@@ -2650,7 +2650,7 @@ need to be copied to the
     </param>
     <param>
       <key>bw</key>
-      <value>ch_rate / 4</value>
+      <value>8e3</value>
     </param>
     <param>
       <key>alias</key>
@@ -2678,7 +2678,7 @@ need to be copied to the
     </param>
     <param>
       <key>fftsize</key>
-      <value>2048</value>
+      <value>1024</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -3535,7 +3535,7 @@ need to be copied to the
     </param>
     <param>
       <key>decim</key>
-      <value>4</value>
+      <value>int(ch_rate)</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -3547,7 +3547,7 @@ need to be copied to the
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(711, 299)</value>
+      <value>(710, 299)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3559,7 +3559,7 @@ need to be copied to the
     </param>
     <param>
       <key>interp</key>
-      <value>1</value>
+      <value>8000</value>
     </param>
     <param>
       <key>maxoutbuf</key>
