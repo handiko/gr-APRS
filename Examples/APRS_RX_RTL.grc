@@ -303,7 +303,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.1</value>
+      <value>0.175</value>
     </param>
   </block>
   <block>
@@ -3328,7 +3328,7 @@ need to be copied to the
     </param>
     <param>
       <key>fftsize</key>
-      <value>4096</value>
+      <value>4096/2</value>
     </param>
     <param>
       <key>_coordinate</key>
