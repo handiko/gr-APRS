@@ -3289,11 +3289,11 @@ need to be copied to the
     </param>
     <param>
       <key>ymax</key>
-      <value>4.2</value>
+      <value>2.1</value>
     </param>
     <param>
       <key>ymin</key>
-      <value>-4.2</value>
+      <value>-2.1</value>
     </param>
   </block>
   <block>

@@ -5,7 +5,7 @@
 # Title: APRS - With RTL-SDR dongle
 # Author: Handiko
 # Description: www.github.com/handiko/gr-APRS
-# Generated: Fri Dec 28 01:05:14 2018
+# Generated: Thu Jan  3 20:46:30 2019
 ##################################################
 
 if __name__ == '__main__':
@@ -138,7 +138,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         	1 #number of inputs
         )
         self.qtgui_time_sink_x_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0.set_y_axis(-4.2, 4.2)
+        self.qtgui_time_sink_x_0.set_y_axis(-2.1, 2.1)
         
         self.qtgui_time_sink_x_0.set_y_label('Amplitude', "")
         
