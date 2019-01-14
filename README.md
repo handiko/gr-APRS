@@ -1,4 +1,4 @@
-# gr-APRS
+# gr-APRS - A GNU Radio Block for Receiving APRS
 GNU Radio Hierarchial Block(s) to Test and Receive APRS Packet (with examples). Tested on GNU Radio v3.7.10 / Linux Ubuntu.
 
 ![](./gnuradio_logo.svg)
