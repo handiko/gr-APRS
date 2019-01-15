@@ -5,7 +5,7 @@
 # Title: APRS - With RTL-SDR dongle
 # Author: Handiko
 # Description: www.github.com/handiko/gr-APRS
-# Generated: Sat Jan  5 12:17:36 2019
+# Generated: Tue Jan 15 11:19:37 2019
 ##################################################
 
 if __name__ == '__main__':
@@ -70,14 +70,14 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.space = space = 2400
         self.samp_rate = samp_rate = 2.88e6
-        self.rfgain = rfgain = 10
+        self.space = space = 2400
+        self.rfgain = rfgain = 25
         self.mu = mu = 0.5
         self.mark = mark = 1200
         self.gmu = gmu = 0.175
-        self.freq = freq = 144.39e6
-        self.dev_ppm = dev_ppm = 52
+        self.freq = freq = 144.39e6 - samp_rate/4
+        self.dev_ppm = dev_ppm = 58
         self.ch_rate = ch_rate = 48e3
         self.bb_rate = bb_rate = 192e3
         self.baud = baud = 1200
@@ -86,7 +86,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         ##################################################
         # Blocks
         ##################################################
-        self._rfgain_range = Range(0, 49, 1, 10, 100)
+        self._rfgain_range = Range(0, 49, 1, 25, 100)
         self._rfgain_win = RangeWidget(self._rfgain_range, self.set_rfgain, 'RF Gain (dB)', "counter_slider", float)
         self.top_grid_layout.addWidget(self._rfgain_win, 2,0,1,1)
         self.rational_resampler_xxx_0 = filter.rational_resampler_fff(
@@ -299,6 +299,8 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.fft_filter_xxx_1.declare_sample_delay(0)
         self.epy_block_0 = epy_block_0.blk()
         self.blocks_socket_pdu_0 = blocks.socket_pdu("TCP_SERVER", '', '52001', 10000, False)
+        self.blocks_rotator_cc_0 = blocks.rotator_cc(-math.pi/2)
+        self.blocks_message_debug_0 = blocks.message_debug()
         self.analog_quadrature_demod_cf_0 = analog.quadrature_demod_cf(ch_rate/(2*math.pi*12e3/8.0))
         self._afgain_range = Range(-20, -1, 0.1, -7, 100)
         self._afgain_win = RangeWidget(self._afgain_range, self.set_afgain, 'AF Gain (dB)', "counter_slider", float)
@@ -316,13 +318,15 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.msg_connect((self.APRS_Rx_0, 'HDLC'), (self.epy_block_0, 'hdlc in'))    
+        self.msg_connect((self.epy_block_0, 'ax25 out'), (self.blocks_message_debug_0, 'print'))    
         self.msg_connect((self.epy_block_0, 'ax25 out'), (self.blocks_socket_pdu_0, 'pdus'))    
         self.connect((self.APRS_Rx_0, 0), (self.qtgui_time_sink_x_0, 0))    
         self.connect((self.analog_quadrature_demod_cf_0, 0), (self.fft_filter_xxx_1, 0))    
+        self.connect((self.blocks_rotator_cc_0, 0), (self.pfb_decimator_ccf_0, 0))    
+        self.connect((self.blocks_rotator_cc_0, 0), (self.pfb_decimator_ccf_0_0, 0))    
         self.connect((self.fft_filter_xxx_1, 0), (self.APRS_Rx_0, 0))    
         self.connect((self.fft_filter_xxx_1, 0), (self.rational_resampler_xxx_0, 0))    
-        self.connect((self.osmosdr_source_0, 0), (self.pfb_decimator_ccf_0, 0))    
-        self.connect((self.osmosdr_source_0, 0), (self.pfb_decimator_ccf_0_0, 0))    
+        self.connect((self.osmosdr_source_0, 0), (self.blocks_rotator_cc_0, 0))    
         self.connect((self.pfb_decimator_ccf_0, 0), (self.qtgui_freq_sink_x_0, 0))    
         self.connect((self.pfb_decimator_ccf_0, 0), (self.qtgui_waterfall_sink_x_0, 0))    
         self.connect((self.pfb_decimator_ccf_0_0, 0), (self.analog_quadrature_demod_cf_0, 0))    
@@ -333,19 +337,20 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
+    def get_samp_rate(self):
+        return self.samp_rate
+
+    def set_samp_rate(self, samp_rate):
+        self.samp_rate = samp_rate
+        self.set_freq(144.39e6 - self.samp_rate/4)
+        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
+
     def get_space(self):
         return self.space
 
     def set_space(self, space):
         self.space = space
         self.APRS_Rx_0.set_space(self.space)
-
-    def get_samp_rate(self):
-        return self.samp_rate
-
-    def set_samp_rate(self, samp_rate):
-        self.samp_rate = samp_rate
-        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
 
     def get_rfgain(self):
         return self.rfgain
