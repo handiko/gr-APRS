@@ -5,7 +5,7 @@
 # Title: APRS - With RTL-SDR dongle
 # Author: Handiko
 # Description: www.github.com/handiko/gr-APRS
-# Generated: Wed Jan 16 07:41:38 2019
+# Generated: Sun Jan 20 01:05:30 2019
 ##################################################
 
 if __name__ == '__main__':
@@ -70,7 +70,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 2.88e6
+        self.samp_rate = samp_rate = 2.4e6
         self.space = space = 2400
         self.rfgain = rfgain = 25
         self.mu = mu = 0.5
