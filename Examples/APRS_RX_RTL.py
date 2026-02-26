@@ -31,7 +31,6 @@ from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from gnuradio import network
-from gnuradio.filter import pfb
 import APRS_RX_RTL_epy_block_0_0 as epy_block_0_0  # embedded python block
 import osmosdr
 import time
@@ -76,7 +75,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         ##################################################
         self.samp_rate = samp_rate = 2.4e6
         self.ch_rate = ch_rate = 48e3
-        self.space = space = 2400
+        self.space = space = 2300
         self.rfgain = rfgain = 25
         self.mu = mu = 0.5
         self.mark = mark = 1200
@@ -99,6 +98,16 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
             self.top_grid_layout.setColumnStretch(c, 1)
+        self.rational_resampler_xxx_2 = filter.rational_resampler_ccc(
+                interpolation=1,
+                decimation=12,
+                taps=[],
+                fractional_bw=0)
+        self.rational_resampler_xxx_1 = filter.rational_resampler_ccc(
+                interpolation=1,
+                decimation=50,
+                taps=[],
+                fractional_bw=0)
         self.rational_resampler_xxx_0 = filter.rational_resampler_fff(
                 interpolation=8000,
                 decimation=int(ch_rate),
@@ -122,7 +131,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
 
         labels = ['', '', '', '', '',
                   '', '', '', '', '']
-        colors = [6, 0, 0, 0, 0,
+        colors = [3, 0, 0, 0, 0,
                   0, 0, 0, 0, 0]
         alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
                   1.0, 1.0, 1.0, 1.0, 1.0]
@@ -292,22 +301,6 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 2):
             self.top_grid_layout.setColumnStretch(c, 1)
-        self.pfb_decimator_ccf_0_0 = pfb.decimator_ccf(
-            (int(samp_rate / ch_rate)),
-            ,
-            0,
-            100,
-            True,
-            True)
-        self.pfb_decimator_ccf_0_0.declare_sample_delay(0)
-        self.pfb_decimator_ccf_0 = pfb.decimator_ccf(
-            (int(samp_rate / bb_rate)),
-            ,
-            0,
-            100,
-            True,
-            True)
-        self.pfb_decimator_ccf_0.declare_sample_delay(0)
         self.osmosdr_source_0 = osmosdr.source(
             args="numchan=" + str(1) + " " + ''
         )
@@ -353,15 +346,15 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.msg_connect((self.epy_block_0_0, 'ax25 out'), (self.network_socket_pdu_0, 'pdus'))
         self.connect((self.APRS_Rx_0, 0), (self.qtgui_time_sink_x_0, 0))
         self.connect((self.analog_quadrature_demod_cf_0, 0), (self.fft_filter_xxx_0, 0))
-        self.connect((self.blocks_rotator_cc_0, 0), (self.pfb_decimator_ccf_0, 0))
-        self.connect((self.blocks_rotator_cc_0, 0), (self.pfb_decimator_ccf_0_0, 0))
+        self.connect((self.blocks_rotator_cc_0, 0), (self.rational_resampler_xxx_1, 0))
+        self.connect((self.blocks_rotator_cc_0, 0), (self.rational_resampler_xxx_2, 0))
         self.connect((self.fft_filter_xxx_0, 0), (self.APRS_Rx_0, 0))
         self.connect((self.fft_filter_xxx_0, 0), (self.rational_resampler_xxx_0, 0))
         self.connect((self.osmosdr_source_0, 0), (self.blocks_rotator_cc_0, 0))
-        self.connect((self.pfb_decimator_ccf_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.pfb_decimator_ccf_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
-        self.connect((self.pfb_decimator_ccf_0_0, 0), (self.analog_quadrature_demod_cf_0, 0))
         self.connect((self.rational_resampler_xxx_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
+        self.connect((self.rational_resampler_xxx_1, 0), (self.analog_quadrature_demod_cf_0, 0))
+        self.connect((self.rational_resampler_xxx_2, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.rational_resampler_xxx_2, 0), (self.qtgui_waterfall_sink_x_0, 0))
 
 
     def closeEvent(self, event):
