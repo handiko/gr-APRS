@@ -1,5 +1,5 @@
 # gr-APRS - A GNU Radio Block for Receiving APRS
-GNU Radio Hierarchical Block(s) to Test and Receive APRS Packet (with examples). Tested on GNU Radio v3.7.10 / Linux Ubuntu.
+GNU Radio Hierarchical Block(s) to Test and Receive APRS Packet (with examples). Tested on GNU Radio v3.10 .
 
 ![](./gnuradio_logo.svg)
 
