@@ -1,5 +1,9 @@
 # gr-APRS - A GNU Radio Block for Receiving APRS
-GNU Radio Hierarchical Block(s) to Test and Receive APRS Packet (with examples). Tested on GNU Radio v3.10 .
+GNU Radio Hierarchical Block(s) to Test and Receive APRS Packet (with examples). Tested on **GNU Radio v3.10**.
+
+## (-- FINALLY UPDATED AFTER 8 YEARS !!! --)
+* All of the codes are rebuilt with GNU Radio V3.10 and python3
+* The Python files used in the Python Block are consolidated into a single file.
 
 ![](./gnuradio_logo.svg)
 
