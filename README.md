@@ -46,6 +46,8 @@ This block, which uploads the TNC2 APRS sentence to APRS-IS, is constructed from
 * In the editor, copy and paste python code from **gr-APRS/Module/igate.py**, save, close, and hit OK.
 * Now your Python Block should be turned into an APRS-IS I-Gate Block, with message input port which are labelled as "pdu in".
 
+* ![](./igate_block.png)
+
 The parameters:
 * Callsign: Your callsign should be enclosed with " ", example: "YB1SDL"
 * Passcode: Your APRS-IS passcode
@@ -76,6 +78,9 @@ A Few notes:
 ### APRS RX RTL
 From **gr-APRS/Examples/APRS_RX_RTL.grc**. This example uses the low-cost RTL-SDR dongle to receive the APRS signal on 144.390 MHz (for another frequency, please change the frequency in the grc).
 ![](./APRS_RX_RTL.grc.png)
+
+The dashboard:
+![](./dashboard.png)
 
 ### APRS I-Gate
 From **gr-APRS/Examples/APRS_IGATE_RTL.grc**. This example uses the low-cost RTL-SDR dongle to receive the APRS signal on 144.390 MHz and upload it to APRS-IS (functions as an I-Gate).
