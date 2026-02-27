@@ -30,8 +30,8 @@ from PyQt5 import Qt
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
-from gnuradio import network
 import APRS_RX_RTL_epy_block_0_0 as epy_block_0_0  # embedded python block
+import APRS_RX_RTL_epy_block_1 as epy_block_1  # embedded python block
 import osmosdr
 import time
 import sip
@@ -316,9 +316,9 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.osmosdr_source_0.set_bb_gain(20, 0)
         self.osmosdr_source_0.set_antenna('', 0)
         self.osmosdr_source_0.set_bandwidth(0, 0)
-        self.network_socket_pdu_0 = network.socket_pdu('TCP_SERVER', '', '52001', 10000, False)
         self.fft_filter_xxx_0 = filter.fft_filter_fff(1, bpf, 1)
         self.fft_filter_xxx_0.declare_sample_delay(0)
+        self.epy_block_1 = epy_block_1.blk(callsign="YB1SDL", passcode=24511, lat="0622.07S", lon="10649.01E", comment="::GNU Radio APRS I-Gate::", beacon_interval=60, server="rotate.aprs.net", port=14580)
         self.epy_block_0_0 = epy_block_0_0.blk()
         self.blocks_rotator_cc_0 = blocks.rotator_cc((-math.pi/2), False)
         self.analog_quadrature_demod_cf_0 = analog.quadrature_demod_cf((ch_rate/(2*math.pi*12e3/8.0)))
@@ -343,7 +343,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.msg_connect((self.APRS_Rx_0, 'HDLC'), (self.epy_block_0_0, 'hdlc in'))
-        self.msg_connect((self.epy_block_0_0, 'ax25 out'), (self.network_socket_pdu_0, 'pdus'))
+        self.msg_connect((self.epy_block_0_0, 'ax25 out'), (self.epy_block_1, 'pdu_in'))
         self.connect((self.APRS_Rx_0, 0), (self.qtgui_time_sink_x_0, 0))
         self.connect((self.analog_quadrature_demod_cf_0, 0), (self.fft_filter_xxx_0, 0))
         self.connect((self.blocks_rotator_cc_0, 0), (self.rational_resampler_xxx_1, 0))
