@@ -41,7 +41,6 @@ This block, which functions to convert HDLC data into TNC2 APRS formats, is cons
 ### APRS-IS I-Gate
 This block, which uploads the TNC2 APRS sentence to APRS-IS, is constructed from the "Python Block," which is native to the GNU Radio Companion. To build one yourself:
 * From the GNU Radio Core module, under Misc, add a Python Block into your flowgraph.
-![](./embedded_python_block.png)
 * Double-click that block to open the properties and then click Open in Editor. If you then asked about which editor to choose, just select the default or any editor you prefer.
 * In the editor, copy and paste python code from **gr-APRS/Module/igate.py**, save, close, and hit OK.
 * Now your Python Block should be turned into an APRS-IS I-Gate Block, with message input port which are labelled as "pdu in".
