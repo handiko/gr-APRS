@@ -78,7 +78,7 @@ From **gr-APRS/Examples/APRS_RX_RTL.grc**. This example uses the low-cost RTL-SD
 ![](./APRS_RX_RTL.grc.png)
 
 ### APRS I-Gate
-From **gr-APRS/Examples/APRS_RX_RTL.grc**. This example uses the low-cost RTL-SDR dongle to receive the APRS signal on 144.390 MHz and upload it to APRS-IS (functions as an I-Gate).
+From **gr-APRS/Examples/APRS_IGATE_RTL.grc**. This example uses the low-cost RTL-SDR dongle to receive the APRS signal on 144.390 MHz and upload it to APRS-IS (functions as an I-Gate).
 ![](./APRS_IGATE_RTL.grc.png)
 
 ### APRS SCARD
