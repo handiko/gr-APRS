@@ -79,6 +79,8 @@ A Few notes:
 From **gr-APRS/Examples/APRS_RX_RTL.grc**. This example uses the low-cost RTL-SDR dongle to receive the APRS signal on 144.390 MHz (for another frequency, please change the frequency in the grc).
 ![](./APRS_RX_RTL.grc.png)
 
+**_PLEASE MAKE SURE YOU PUT THE PROPER CALIBRATION VALUE (PPM) IN THE OSMOCOM-SOURCE BLOCK_**
+
 The dashboard:
 ![](./dashboard.png)
 
