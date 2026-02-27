@@ -54,7 +54,7 @@ The parameters:
 * Beacon interval: in seconds
 * Server: default: "rotate.aprs.net"
 * Port: default: 14580
-* Comment: custom: "Your comment here"
+* Comment: custom: "Your comment here."
 
 ## Hier Blocks
 All the hier blocks are constructed graphically using GNU Radio Companion. AFSK Demod hier block is required by the APRS Rx hier block (hier block which contains another hier block within), so it should be installed first.
@@ -74,11 +74,15 @@ A Few notes:
 ![](./aprs_output.png)
 
 ### APRS RX RTL
-From **gr-APRS/Examples/APRS_RX_RTL.grc**. This example utilizes the low-cost RTL SDR dongle for receiving the APRS signal on 144.390 Mhz (for usage on another frequency, please change the frequency in the grc).
+From **gr-APRS/Examples/APRS_RX_RTL.grc**. This example uses the low-cost RTL-SDR dongle to receive the APRS signal on 144.390 MHz (for another frequency, please change the frequency in the grc).
 ![](./APRS_RX_RTL.grc.png)
 
+### APRS I-Gate
+From **gr-APRS/Examples/APRS_RX_RTL.grc**. This example uses the low-cost RTL-SDR dongle to receive the APRS signal on 144.390 MHz and upload it to APRS-IS (functions as an I-Gate).
+![](./APRS_IGATE_RTL.grc.png)
+
 ### APRS SCARD
-From **gr-APRS/Examples/APRS_SCARD.grc**. This example utilizes the onboard sound card for use with a VHF Radio receiver. Audio from the Radio SPK output should be fed into the MIC input of your soundcard.
+From **gr-APRS/Examples/APRS_SCARD.grc**. This example uses the onboard sound card with a VHF Radio receiver. Audio from the Radio SPK output should be fed into the MIC input of your soundcard.
 ![](./APRS_SCARD.grc.png)
 
 ### APRS AFSK Complete WAV
