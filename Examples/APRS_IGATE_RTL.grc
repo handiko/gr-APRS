@@ -95,7 +95,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 312.0]
+    coordinate: [704, 360.0]
     rotation: 0
     state: enabled
 - name: ch_rate
@@ -233,7 +233,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [888, 92.0]
+    coordinate: [808, 92.0]
     rotation: 0
     state: enabled
 - name: analog_quadrature_demod_cf_0
@@ -333,7 +333,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1176, 112.0]
+    coordinate: [1024, 104.0]
     rotation: 0
     state: enabled
 - name: epy_block_1
@@ -412,7 +412,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1168, 144.0]
+    coordinate: [1120, 144.0]
     rotation: 0
     state: enabled
 - name: fft_filter_xxx_0
@@ -432,7 +432,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [672, 120.0]
+    coordinate: [632, 120.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -883,7 +883,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 316.0]
+    coordinate: [480, 316.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0_0
@@ -964,7 +964,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [944, 236.0]
+    coordinate: [920, 268.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -1061,7 +1061,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1200, 348.0]
+    coordinate: [1104, 356.0]
     rotation: 0
     state: enabled
 - name: qtgui_waterfall_sink_x_0
@@ -1122,7 +1122,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 196.0]
+    coordinate: [504, 204.0]
     rotation: 0
     state: enabled
 - name: rational_resampler_xxx_0
@@ -1142,7 +1142,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [736, 204.0]
+    coordinate: [736, 236.0]
     rotation: 0
     state: enabled
 - name: rational_resampler_xxx_1
@@ -1182,7 +1182,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 220.0]
+    coordinate: [288, 220.0]
     rotation: 0
     state: enabled
 
