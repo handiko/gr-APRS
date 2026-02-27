@@ -5,6 +5,7 @@ GNU Radio Hierarchical Block(s) to Test and Receive APRS Packet (with examples).
 As of February 2026:
 * All of the codes are rebuilt with GNU Radio V3.10 and python3
 * The Python files used in the Python Block are consolidated into a single file.
+* **Added APRS I-Gate** code.
 
 ---
 
@@ -16,11 +17,11 @@ As of February 2026:
 ## Installations
 This OOT Module is built upon the GNU Radio hierarchical block scheme. The hierarchical block itself is "transparently" built graphically / visually using GRC. The hier blocks are provided in the gr-APRS/HierBlock folder.
 Installation steps :
-* `git clone https://github.com/handiko/gr-APRS.git`
-* `cd gr-APRS/HierBlock/.`
-* `gnuradio-companion AFSK_Demod.grc` **AFSK_Demod.grc** should be installed **first**.
+* git clone https://github.com/handiko/gr-APRS.git
+* cd gr-APRS/HierBlock/.
+* AFSK_Demod.grc **AFSK_Demod.grc** should be installed **first**.
 * **Click RUN** (F6) button on GNU Radio companion (It will do nothing in the foreground, since it will just build and install the Hier Block silently). Then **Close**.
-* `gnuradio-companion APRS_Rx.grc` **APRS_Rx.grc** should be installed **after** AFSK_Demod.grc.
+* APRS_Rx.grc **APRS_Rx.grc** should be installed **after** AFSK_Demod.grc.
 * Again, **Click RUN** (F6) button and then Close.
 * **Open the GNU Radio**. The new Hier Block will be listed under the APRS module.
 ![](./successful_installation.png)
@@ -36,6 +37,24 @@ This block, which functions to convert HDLC data into TNC2 APRS formats, is cons
 * Now your Python Block should be turned into HDLC to AX.25 Block, have message i/o ports which are labelled as "hdlc in" and "ax25 out".
 
 ![](./hdlc_to_ax25_block.png)
+
+### APRS-IS I-Gate
+This block, which uploads the TNC2 APRS sentence to APRS-IS, is constructed from the "Python Block," which is native to the GNU Radio Companion. To build one yourself:
+* From the GNU Radio Core module, under Misc, add a Python Block into your flowgraph.
+![](./embedded_python_block.png)
+* Double-click that block to open the properties and then click Open in Editor. If you then asked about which editor to choose, just select the default or any editor you prefer.
+* In the editor, copy and paste python code from **gr-APRS/Module/igate.py**, save, close, and hit OK.
+* Now your Python Block should be turned into an APRS-IS I-Gate Block, with message input port which are labelled as "pdu in".
+
+The parameters:
+* Callsign: Your callsign should be enclosed with " ", example: "YB1SDL"
+* Passcode: Your APRS-IS passcode
+* Lat: DDMM.SS format. Should be enclosed with " ", example: "0633.44S"
+* Lon: DDDMM.SS format. Should be enclosed with " ", example: "10655.77E"
+* Beacon interval: in seconds
+* Server: default: "rotate.aprs.net"
+* Port: default: 14580
+* Comment: custom: "Your comment here"
 
 ## Hier Blocks
 All the hier blocks are constructed graphically using GNU Radio Companion. AFSK Demod hier block is required by the APRS Rx hier block (hier block which contains another hier block within), so it should be installed first.
