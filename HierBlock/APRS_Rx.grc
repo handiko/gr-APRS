@@ -45,12 +45,12 @@ blocks:
     in_sps: int(samp_rate/baud)
     maxoutbuf: '0'
     minoutbuf: '0'
-    out_sps: '2'
+    out_sps: '4'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [160, 180.0]
+    coordinate: [144, 180.0]
     rotation: 0
     state: enabled
 - name: baud
@@ -84,7 +84,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [992, 480.0]
+    coordinate: [848, 456.0]
     rotation: 0
     state: enabled
 - name: blocks_not_xx_0
@@ -100,7 +100,58 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [920, 480.0]
+    coordinate: [784, 448.0]
+    rotation: 0
+    state: enabled
+- name: bw
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Loop BW
+    short_id: ''
+    type: eng_float
+    value: '0.045'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 4.0]
+    rotation: 0
+    state: enabled
+- name: dev
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Maximum Deviation
+    short_id: ''
+    type: eng_float
+    value: '1.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [968, 4.0]
+    rotation: 0
+    state: enabled
+- name: df
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Damping Factor
+    short_id: ''
+    type: eng_float
+    value: '0.707'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [824, 4.0]
     rotation: 0
     state: enabled
 - name: digital_binary_slicer_fb_0
@@ -115,8 +166,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 192.0]
-    rotation: 0
+    coordinate: [624, 408.0]
+    rotation: 180
     state: enabled
 - name: digital_diff_decoder_bb_0
   id: digital_diff_decoder_bb
@@ -132,7 +183,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 472.0]
+    coordinate: [616, 448.0]
     rotation: 0
     state: enabled
 - name: digital_hdlc_deframer_bp_0
@@ -149,7 +200,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1104, 480.0]
+    coordinate: [952, 432.0]
     rotation: 0
     state: enabled
 - name: digital_symbol_sync_xx_0
@@ -159,41 +210,24 @@ blocks:
     alias: ''
     comment: ''
     constellation: digital.constellation_bpsk().base()
-    damping: '1.0'
-    loop_bw: '0.045'
-    max_dev: '0.005'
+    damping: df
+    loop_bw: bw
+    max_dev: dev
     maxoutbuf: '0'
     minoutbuf: '0'
     nfilters: '128'
     osps: '1'
     pfb_mf_taps: '[]'
     resamp_type: digital.IR_PFB_NO_MF
-    sps: '2.0'
+    sps: '4.0'
     ted_gain: '1.0'
-    ted_type: digital.TED_MUELLER_AND_MULLER
+    ted_type: digital.TED_GARDNER
     type: ff
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [448, 160.0]
-    rotation: 0
-    state: enabled
-- name: gmu
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: Gain Mu
-    short_id: ''
-    type: eng_float
-    value: '0.175'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [795, 6]
+    coordinate: [384, 152.0]
     rotation: 0
     state: enabled
 - name: mark
@@ -213,23 +247,6 @@ blocks:
     coordinate: [439, 8]
     rotation: 0
     state: enabled
-- name: mu
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: Mu
-    short_id: ''
-    type: eng_float
-    value: '0.5'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [710, 5]
-    rotation: 0
-    state: enabled
 - name: pad_sink_1
   id: pad_sink
   parameters:
@@ -245,7 +262,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1304, 488.0]
+    coordinate: [1144, 440.0]
     rotation: 0
     state: enabled
 - name: pad_sink_2
@@ -263,7 +280,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 136.0]
+    coordinate: [872, 176.0]
     rotation: 0
     state: enabled
 - name: pad_sink_2_0
@@ -281,7 +298,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [456, 368.0]
+    coordinate: [488, 360.0]
     rotation: 0
     state: enabled
 - name: pad_source_0

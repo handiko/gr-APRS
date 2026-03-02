@@ -45,7 +45,7 @@ blocks:
     start: '-20'
     step: '0.1'
     stop: '-1'
-    value: '-7'
+    value: '-10.0'
     widget: counter_slider
   states:
     bus_sink: false
@@ -114,7 +114,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '58'
+    value: '35'
   states:
     bus_sink: false
     bus_source: false
@@ -221,12 +221,13 @@ blocks:
     affinity: ''
     alias: ''
     baud: baud
+    bw: '0.045'
     comment: ''
-    gmu: gmu
+    dev: '1.0'
+    df: '0.707'
     mark: mark
     maxoutbuf: '0'
     minoutbuf: '0'
-    mu: mu
     samp_rate: ch_rate
     space: space
   states:
@@ -234,6 +235,27 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [808, 92.0]
+    rotation: 0
+    state: enabled
+- name: analog_agc2_xx_1
+  id: analog_agc2_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    attack_rate: '0.5'
+    comment: ''
+    decay_rate: 10e-6
+    gain: '1.0'
+    max_gain: '65536'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    reference: '0.1'
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [920, 372.0]
     rotation: 0
     state: enabled
 - name: analog_quadrature_demod_cf_0
@@ -250,6 +272,41 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [464, 136.0]
+    rotation: 0
+    state: enabled
+- name: audio_sink_0
+  id: audio_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    device_name: ''
+    num_inputs: '1'
+    ok_to_block: 'True'
+    samp_rate: '48000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1104, 480.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: pow(10.0,afgain/10.0)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 480.0]
     rotation: 0
     state: enabled
 - name: blocks_rotator_cc_0
@@ -877,8 +934,8 @@ blocks:
     width8: '1'
     width9: '1'
     wintype: window.WIN_BLACKMAN_hARRIS
-    ymax: '-10'
-    ymin: '-120'
+    ymax: '-20'
+    ymin: '-100'
   states:
     bus_sink: false
     bus_source: false
@@ -1022,7 +1079,7 @@ blocks:
     marker9: '-1'
     name: Clock Recovery
     nconnections: '1'
-    size: '256'
+    size: '512'
     srate: '1200'
     stemplot: 'False'
     style1: '1'
@@ -1112,7 +1169,7 @@ blocks:
     legend: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
-    name: RF Spectrum
+    name: RF Waterfall
     nconnections: '1'
     showports: 'True'
     type: complex
@@ -1189,11 +1246,14 @@ blocks:
 connections:
 - [APRS_Rx_0, '0', qtgui_time_sink_x_0, '0']
 - [APRS_Rx_0, HDLC, epy_block_0_0, hdlc in]
+- [analog_agc2_xx_1, '0', blocks_multiply_const_vxx_0, '0']
 - [analog_quadrature_demod_cf_0, '0', fft_filter_xxx_0, '0']
+- [blocks_multiply_const_vxx_0, '0', audio_sink_0, '0']
 - [blocks_rotator_cc_0, '0', rational_resampler_xxx_1, '0']
 - [blocks_rotator_cc_0, '0', rational_resampler_xxx_2, '0']
 - [epy_block_0_0, ax25 out, epy_block_1, pdu_in]
 - [fft_filter_xxx_0, '0', APRS_Rx_0, '0']
+- [fft_filter_xxx_0, '0', analog_agc2_xx_1, '0']
 - [fft_filter_xxx_0, '0', rational_resampler_xxx_0, '0']
 - [osmosdr_source_0, '0', blocks_rotator_cc_0, '0']
 - [rational_resampler_xxx_0, '0', qtgui_freq_sink_x_0_0, '0']

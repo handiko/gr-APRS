@@ -20,6 +20,7 @@ from APRS_Rx import APRS_Rx  # grc-generated hier_block
 from PyQt5 import QtCore
 from gnuradio import analog
 import math
+from gnuradio import audio
 from gnuradio import blocks
 from gnuradio import filter
 from gnuradio.filter import firdes
@@ -81,11 +82,11 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.mark = mark = 1200
         self.gmu = gmu = 0.175
         self.freq = freq = 144.39e6 - samp_rate/4
-        self.dev_ppm = dev_ppm = 58
+        self.dev_ppm = dev_ppm = 35
         self.bpf = bpf = firdes.band_pass(1.0, ch_rate, 1e3, 2.6e3, 100.0, window.WIN_BLACKMAN, 6.76)
         self.bb_rate = bb_rate = 192e3
         self.baud = baud = 1200
-        self.afgain = afgain = -7
+        self.afgain = afgain = -10.0
 
         ##################################################
         # Blocks
@@ -97,6 +98,13 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         for r in range(2, 3):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
+            self.top_grid_layout.setColumnStretch(c, 1)
+        self._afgain_range = qtgui.Range(-20, -1, 0.1, -10.0, 100)
+        self._afgain_win = qtgui.RangeWidget(self._afgain_range, self.set_afgain, "AF Gain (dB)", "counter_slider", float, QtCore.Qt.Horizontal)
+        self.top_grid_layout.addWidget(self._afgain_win, 2, 1, 1, 1)
+        for r in range(2, 3):
+            self.top_grid_layout.setRowStretch(r, 1)
+        for c in range(1, 2):
             self.top_grid_layout.setColumnStretch(c, 1)
         self.rational_resampler_xxx_2 = filter.rational_resampler_ccc(
                 interpolation=1,
@@ -118,7 +126,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
             window.WIN_BLACKMAN_hARRIS, #wintype
             0, #fc
             192e3, #bw
-            'RF Spectrum', #name
+            'RF Waterfall', #name
             1, #number of inputs
             None # parent
         )
@@ -154,7 +162,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         for c in range(2, 3):
             self.top_grid_layout.setColumnStretch(c, 1)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
-            256, #size
+            512, #size
             1200, #samp_rate
             'Clock Recovery', #name
             1, #number of inputs
@@ -264,7 +272,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
             None # parent
         )
         self.qtgui_freq_sink_x_0.set_update_time(0.10)
-        self.qtgui_freq_sink_x_0.set_y_axis((-120), (-10))
+        self.qtgui_freq_sink_x_0.set_y_axis((-100), (-20))
         self.qtgui_freq_sink_x_0.set_y_label('Relative Gain', 'dB')
         self.qtgui_freq_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
         self.qtgui_freq_sink_x_0.enable_autoscale(False)
@@ -321,19 +329,16 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.epy_block_1 = epy_block_1.blk(callsign="YB1SDL", passcode=24511, lat="0622.07S", lon="10649.01E", comment="::GNU Radio APRS I-Gate::", beacon_interval=60, server="rotate.aprs.net", port=14580)
         self.epy_block_0_0 = epy_block_0_0.blk()
         self.blocks_rotator_cc_0 = blocks.rotator_cc((-math.pi/2), False)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff((pow(10.0,afgain/10.0)))
+        self.audio_sink_0 = audio.sink(48000, '', True)
         self.analog_quadrature_demod_cf_0 = analog.quadrature_demod_cf((ch_rate/(2*math.pi*12e3/8.0)))
-        self._afgain_range = qtgui.Range(-20, -1, 0.1, -7, 100)
-        self._afgain_win = qtgui.RangeWidget(self._afgain_range, self.set_afgain, "AF Gain (dB)", "counter_slider", float, QtCore.Qt.Horizontal)
-        self.top_grid_layout.addWidget(self._afgain_win, 2, 1, 1, 1)
-        for r in range(2, 3):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(1, 2):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.analog_agc2_xx_1 = analog.agc2_ff(0.5, (10e-6), 0.1, 1.0, 65536)
         self.APRS_Rx_0 = APRS_Rx(
             baud=baud,
-            gmu=gmu,
+            bw=0.045,
+            dev=1.0,
+            df=0.707,
             mark=mark,
-            mu=mu,
             samp_rate=ch_rate,
             space=space,
         )
@@ -345,10 +350,13 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
         self.msg_connect((self.APRS_Rx_0, 'HDLC'), (self.epy_block_0_0, 'hdlc in'))
         self.msg_connect((self.epy_block_0_0, 'ax25 out'), (self.epy_block_1, 'pdu_in'))
         self.connect((self.APRS_Rx_0, 0), (self.qtgui_time_sink_x_0, 0))
+        self.connect((self.analog_agc2_xx_1, 0), (self.blocks_multiply_const_vxx_0, 0))
         self.connect((self.analog_quadrature_demod_cf_0, 0), (self.fft_filter_xxx_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.audio_sink_0, 0))
         self.connect((self.blocks_rotator_cc_0, 0), (self.rational_resampler_xxx_1, 0))
         self.connect((self.blocks_rotator_cc_0, 0), (self.rational_resampler_xxx_2, 0))
         self.connect((self.fft_filter_xxx_0, 0), (self.APRS_Rx_0, 0))
+        self.connect((self.fft_filter_xxx_0, 0), (self.analog_agc2_xx_1, 0))
         self.connect((self.fft_filter_xxx_0, 0), (self.rational_resampler_xxx_0, 0))
         self.connect((self.osmosdr_source_0, 0), (self.blocks_rotator_cc_0, 0))
         self.connect((self.rational_resampler_xxx_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
@@ -401,7 +409,6 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
 
     def set_mu(self, mu):
         self.mu = mu
-        self.APRS_Rx_0.set_mu(self.mu)
 
     def get_mark(self):
         return self.mark
@@ -415,7 +422,6 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
 
     def set_gmu(self, gmu):
         self.gmu = gmu
-        self.APRS_Rx_0.set_gmu(self.gmu)
 
     def get_freq(self):
         return self.freq
@@ -456,6 +462,7 @@ class APRS_RX_RTL(gr.top_block, Qt.QWidget):
 
     def set_afgain(self, afgain):
         self.afgain = afgain
+        self.blocks_multiply_const_vxx_0.set_k((pow(10.0,self.afgain/10.0)))
 
 
 

@@ -292,6 +292,30 @@ blocks:
     coordinate: [634, 9]
     rotation: 0
     state: enabled
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: '1500'
+    decim: '1'
+    gain: '1.0'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: in_sps*1200.0
+    type: fir_filter_fff
+    width: '500'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [744, 504.0]
+    rotation: 0
+    state: enabled
 - name: out_sps
   id: parameter
   parameters:
@@ -324,7 +348,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [965, 562]
+    coordinate: [1144, 552.0]
     rotation: 0
     state: enabled
 - name: pad_source_0
@@ -364,7 +388,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [770, 538]
+    coordinate: [920, 524.0]
     rotation: 0
     state: enabled
 - name: root_raised_cosine_filter_0
@@ -513,7 +537,8 @@ connections:
 - [blocks_float_to_complex_0, '0', virtual_sink_0, '0']
 - [blocks_rotator_cc_0, '0', root_raised_cosine_filter_0, '0']
 - [blocks_rotator_cc_1, '0', root_raised_cosine_filter_1, '0']
-- [blocks_sub_xx_2, '0', rational_resampler_xxx_0, '0']
+- [blocks_sub_xx_2, '0', low_pass_filter_0, '0']
+- [low_pass_filter_0, '0', rational_resampler_xxx_0, '0']
 - [pad_source_0, '0', blocks_float_to_complex_0, '0']
 - [rational_resampler_xxx_0, '0', pad_sink_0, '0']
 - [root_raised_cosine_filter_0, '0', blocks_complex_to_mag_0, '0']
